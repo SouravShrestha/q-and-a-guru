@@ -1,0 +1,329 @@
+{
+    "topic": "C# Fundamentals",
+    "questions": [
+        {
+            "id": 1,
+            "question": "Explain difference between .NET and C#?",
+            "answer": ".NET is a software development framework created by Microsoft that provides tools, libraries, and runtime components for building various types of applications. C# is a programming language developed by Microsoft for creating applications on the .NET platform. In short: .NET is the framework, while C# is a language used to write code that runs on .NET.",
+            "example": "You can use C#, VB.NET, or F# as languages within the .NET framework."
+        },
+        {
+            "id": 2,
+            "question": ".NET Framework vs .NET Core vs .NET 5.0",
+            "answer": ".NET Framework is the original implementation of .NET, mainly for Windows. .NET Core is a cross-platform, open-source version of .NET. .NET 5.0 unifies .NET Core and .NET Framework into one platform for all devices and operating systems. .NET 5.0 and above are simply called \".NET\".",
+            "example": "A desktop app on Windows uses .NET Framework; a web app on Linux uses .NET Core; a modern app today uses .NET 5.0 or later."
+        },
+        {
+            "id": 3,
+            "question": "What is IL (Intermediate Language) Code?",
+            "answer": "IL (Intermediate Language) is the low-level set of instructions generated from .NET language source code (such as C#) during compilation. It is platform-independent and is later compiled to native code by the .NET runtime.",
+            "example": "When you compile C# code, it becomes IL code, which is eventually run as machine code."
+        },
+        {
+            "id": 4,
+            "question": "What is the use of JIT (Just in Time compiler)?",
+            "answer": "JIT compiles IL code to native machine code just before execution on the target machine. This enables .NET applications to run efficiently across different platforms.",
+            "example": "When you run a .NET app, JIT takes the IL code and converts it into code your CPU understands."
+        },
+        {
+            "id": 5,
+            "question": "Is it possible to view IL code?",
+            "answer": "Yes, you can view IL code using tools like ILDASM (IL Disassembler) or \"dotPeek\".",
+            "example": "ILDASM Program.exe will let you inspect the IL code of your compiled app."
+        },
+        {
+            "id": 6,
+            "question": "What is the benefit of compiling into IL code?",
+            "answer": "Compiling into IL code allows cross-language integration, security, and platform independence. It lets any .NET language program run anywhere .NET is supported.",
+            "example": "A VB.NET and a C# library can work together as both compile to IL."
+        },
+        {
+            "id": 7,
+            "question": "Does .NET support multiple programming languages?",
+            "answer": "Yes, .NET supports languages like C#, VB.NET, F#, and more. All compile to IL code and run on the .NET runtime.",
+            "example": "You can have a solution using both C# and F# projects."
+        },
+        {
+            "id": 8,
+            "question": "What is CLR (Common Language Runtime)?",
+            "answer": "CLR is the execution engine for .NET. It handles memory management, code execution, security, and exception handling, among other runtime services.",
+            "example": "The CLR runs and manages .NET applications."
+        },
+        {
+            "id": 9,
+            "question": "What is managed and unmanaged code?",
+            "answer": "Managed code is code executed by the CLR with services like garbage collection and type safety. Unmanaged code is executed directly by the OS, outside the control of the CLR (e.g., C or C++ DLLs).",
+            "example": "C# code is managed. A C++ DLL used by a C# program is unmanaged."
+        },
+        {
+            "id": 10,
+            "question": "Explain the importance of Garbage collector?",
+            "answer": "The garbage collector (GC) reclaims memory automatically for objects that are no longer used, preventing memory leaks and improving application stability.",
+            "example": "You don't need to free memory manually; GC cleans unused objects."
+        },
+        {
+            "id": 11,
+            "question": "Can garbage collector claim unmanaged objects?",
+            "answer": "No, the GC only reclaims managed objects. For unmanaged resources (like file handles), developers must release them using \"Dispose\" or finalizers.",
+            "example": "Use 'using' statement or call Dispose() for unmanaged resources."
+        },
+        {
+            "id": 12,
+            "question": "What is the importance of CTS?",
+            "answer": "CTS (Common Type System) defines how types are declared and used in .NET, ensuring type compatibility across different .NET languages.",
+            "example": "An int in C# and Integer in VB.NET are treated the same due to CTS."
+        },
+        {
+            "id": 13,
+            "question": "Explain CLS?",
+            "answer": "CLS (Common Language Specification) is a set of language features and rules that .NET languages must follow to ensure interoperability.",
+            "example": "Public APIs should only use CLS-compliant features."
+        },
+        {
+            "id": 14,
+            "question": "Difference between Stack vs Heap?",
+            "answer": "Stack is a region of memory for storing value types and function calls (LIFO - Last In First Out). Heap is used for dynamic memory allocation (reference types), managed by the CLR.",
+            "example": "int a = 10; // stored on stack\nobject o = new object(); // stored on heap"
+        },
+        {
+            "id": 15,
+            "question": "What are Value types & Reference types?",
+            "answer": "Value types directly contain data (e.g., int, float, structs). Reference types store a reference to the data's memory address (e.g., objects, arrays, classes).",
+            "example": "int (value type), string (reference type)"
+        },
+        {
+            "id": 16,
+            "question": "Explain boxing and unboxing?",
+            "answer": "Boxing is converting a value type to a reference type (object). Unboxing is converting an object back to a value type.",
+            "example": "int x = 10; object obj = x; // boxing\nint y = (int)obj; // unboxing"
+        },
+        {
+            "id": 17,
+            "question": "What is consequence of boxing and unboxing?",
+            "answer": "Boxing and unboxing are performance costly because they involve copy and allocation on the heap, affecting application performance if used excessively.",
+            "example": "Repeated boxing/unboxing in loops can slow apps."
+        },
+        {
+            "id": 18,
+            "question": "Explain casting, implicit casting and explicit casting?",
+            "answer": "Casting is converting one type into another. Implicit casting is automatic (e.g., int to long). Explicit casting requires a cast operator and may lose data (e.g., double to int).",
+            "example": "int i = 100; long l = i; // implicit\nint j = (int)l; // explicit"
+        },
+        {
+            "id": 19,
+            "question": "What can happen during explicit casting?",
+            "answer": "Explicit casting can cause data loss or exceptions (e.g., casting a large double to int truncates value).",
+            "example": "double d = 3.99; int i = (int)d; // i = 3"
+        },
+        {
+            "id": 20,
+            "question": "Differentiate between Array and ArrayList?",
+            "answer": "Array is a fixed-size, strongly typed collection. ArrayList is a dynamic-size, weakly typed collection (stores objects).",
+            "example": "int[] nums = new int[5]; // Array\nArrayList list = new ArrayList(); // ArrayList"
+        },
+        {
+            "id": 21,
+            "question": "Whose performance is better array or arraylist?",
+            "answer": "Array performance is better due to its fixed size and strong typing. ArrayList is slower due to type casting and resize operations.",
+            "example": "Use arr[0] instead of list[0] for better speed."
+        },
+        {
+            "id": 22,
+            "question": "What are generic collections?",
+            "answer": "Generic collections are type-safe collections introduced in .NET 2.0, providing better performance and no boxing/unboxing with value types.",
+            "example": "List<int> is a generic collection."
+        },
+        {
+            "id": 23,
+            "question": "What are threads (Multithreading)?",
+            "answer": "Threads are lightweight processes that allow tasks to be performed concurrently, making applications responsive and improving performance for parallel tasks.",
+            "example": "A background thread downloads data while the UI remains responsive."
+        },
+        {
+            "id": 24,
+            "question": "How are threads different from TPL?",
+            "answer": "TPL (Task Parallel Library) provides a higher-level abstraction over threads, enabling easy parallel programming with tasks rather than manually managing threads.",
+            "example": "TPL: Task.Run(() => ...); vs Thread: new Thread(...)."
+        },
+        {
+            "id": 25,
+            "question": "How do we handle exceptions in C# (try/catch)?",
+            "answer": "Exceptions are handled using try-catch blocks. Code in try is checked; if an exception occurs, catch block runs.",
+            "example": "try { /* code */ } catch(Exception ex) { /* handle */ }"
+        },
+        {
+            "id": 26,
+            "question": "What is the need of finally?",
+            "answer": "'finally' block contains code that is always executed after try/catch, such as resource cleanup, regardless of exceptions.",
+            "example": "try { } catch { } finally { CloseConnection(); }"
+        },
+        {
+            "id": 27,
+            "question": "Why do we need the out keyword?",
+            "answer": "'out' enables a method to return multiple values. Variables passed as out must be assigned within the method.",
+            "example": "bool TryParse(string s, out int n);"
+        },
+        {
+            "id": 28,
+            "question": "What is the need of Delegates?",
+            "answer": "Delegates allow methods to be passed as parameters, enabling callbacks, event handling, and method invocation at runtime.",
+            "example": "Define an Action delegate, then invoke it."
+        },
+        {
+            "id": 29,
+            "question": "What are events?",
+            "answer": "Events are mechanisms in C# used for broadcasting notifications. They rely on delegates and allow subscriber methods to be called when something happens.",
+            "example": "Click event on a Button in Windows Forms."
+        },
+        {
+            "id": 30,
+            "question": "Whats the difference between Abstract class and interface?",
+            "answer": "Abstract classes can contain implemented and unimplemented methods and fields, while interfaces only declare methods/properties (from C# 8.0, interfaces can have default methods). Class can inherit only one abstract class but multiple interfaces.",
+            "example": "abstract class A {}; interface IB {};"
+        },
+        {
+            "id": 31,
+            "question": "What is a delegate in C# and how is it used?",
+            "answer": "A delegate is a type-safe function pointer in C#. It allows methods to be passed as parameters. Delegates are used for callbacks, events, and designing extensible applications.",
+            "example": "public delegate void MyDelegate(string msg);\nMyDelegate del = Console.WriteLine;\ndel(\"Hello\");"
+        },
+        {
+            "id": 32,
+            "question": "What is an event in C#?",
+            "answer": "An event is a wrapper over a delegate that allows publishers to notify subscribers when something occurs. It provides a standard pattern for observer behavior.",
+            "example": "public event EventHandler ButtonClicked;\nButtonClicked?.Invoke(this, EventArgs.Empty);"
+        },
+        {
+            "id": 33,
+            "question": "What is the difference between delegate and event?",
+            "answer": "A delegate can be used standalone, but an event adds encapsulation around the delegate, exposing only += and -= access to subscribers.",
+            "example": "delegate void Notify();\npublic event Notify OnNotify;\n// OnNotify += SomeMethod; (OK)\n// OnNotify = null; (Error)"
+        },
+        {
+            "id": 34,
+            "question": "What are the 4 pillars of OOP?",
+            "answer": "The four pillars are Encapsulation, Abstraction, Inheritance, and Polymorphism. These build a modular and flexible design in C#.",
+            "example": "// Encapsulation via class\n// Abstraction via interface\n// Inheritance: class Dog : Animal\n// Polymorphism: Animal a = new Dog();"
+        },
+        {
+            "id": 35,
+            "question": "What is abstraction in C#?",
+            "answer": "Abstraction hides complex systems from the user and exposes only essential parts. Achieved using abstract classes or interfaces.",
+            "example": "interface IShape { void Draw(); }\nclass Circle : IShape { public void Draw() => Console.WriteLine(\"Circle\"); }"
+        },
+        {
+            "id": 36,
+            "question": "What is encapsulation in C#?",
+            "answer": "Encapsulation binds data and methods into a class, hiding state using private modifiers and exposing through public interfaces.",
+            "example": "class Account {\n  private int balance;\n  public void Deposit(int amount) => balance += amount;\n}"
+        },
+        {
+            "id": 37,
+            "question": "What is inheritance in OOP?",
+            "answer": "Inheritance allows a class (child) to derive behavior and properties from another class (parent/base). Reduces code duplication.",
+            "example": "class Animal { public void Eat() {} }\nclass Dog : Animal { public void Bark() {} }"
+        },
+        {
+            "id": 38,
+            "question": "What is the purpose of 'virtual' keyword in C#?",
+            "answer": "'virtual' allows a method to be overridden by subclasses to change behavior at runtime using polymorphism.",
+            "example": "class Animal { public virtual void Speak() => Console.WriteLine(\"Animal\"); }\nclass Dog : Animal { public override void Speak() => Console.WriteLine(\"Bark\"); }"
+        },
+        {
+            "id": 39,
+            "question": "What is the difference between method overloading and overriding?",
+            "answer": "Overloading lets you define multiple methods with the same name but different signatures. Overriding replaces base implementation with custom logic.",
+            "example": "// Overloading\nvoid Print(int x) {}\nvoid Print(string x) {}\n// Overriding\nvirtual void Speak() {}\noverride void Speak() {}"
+        },
+        {
+            "id": 40,
+            "question": "What is polymorphism?",
+            "answer": "Polymorphism allows a method to behave differently based on the object calling it. Achieved via virtual functions or interface implementation.",
+            "example": "Animal a = new Dog();\na.Speak(); // Calls Dog's version if Speak is virtual"
+        },
+        {
+            "id": 41,
+            "question": "Difference between static and dynamic polymorphism?",
+            "answer": "Static polymorphism occurs at compile-time (overloading), while dynamic polymorphism is resolved at runtime (overriding).",
+            "example": "// Static\nvoid Add(int a, int b) {}\nvoid Add(float a, float b) {}\n// Dynamic\nvirtual void Run() {}\noverride void Run() {}"
+        },
+        {
+            "id": 42,
+            "question": "What is operator overloading in C#?",
+            "answer": "Operator overloading enhances classes to work with operators like '+', '*'. You define how operators should behave for your type.",
+            "example": "public static Complex operator +(Complex a, Complex b) => new Complex(a.X + b.X, a.Y + b.Y);"
+        },
+        {
+            "id": 43,
+            "question": "Tricky differences between abstract class and interface?",
+            "answer": "Abstract classes can include implementation, fields, constructors. Interfaces cannot (except default interface methods in C# 8+).",
+            "example": "// Abstract class with constructor\nabstract class A { A() { } public void X() {} }\ninterface I { void Y(); }"
+        },
+        {
+            "id": 44,
+            "question": "Abstract class vs Interface: common interview question",
+            "answer": "Use abstract classes for shared base behavior and interfaces for common contracts across unrelated classes, especially for DI.",
+            "example": "// Abstract: class BaseService { public void Log() {} }\n// Interface: interface ILogger { void Log(); }"
+        },
+        {
+            "id": 45,
+            "question": "Which constructor executes first in parent-child class?",
+            "answer": "The parent (base) constructor runs before the child (derived) constructor when instantiating an object.",
+            "example": "class A { public A() { Console.WriteLine(\"A\"); } }\nclass B : A { public B() { Console.WriteLine(\"B\"); } }\n// Output: A B"
+        },
+        {
+            "id": 46,
+            "question": "What is constructor overloading in C#?",
+            "answer": "Constructor overloading allows different ways to create an object, by defining constructors with different parameter sets.",
+            "example": "class Person {\n  public Person() {}\n  public Person(string name) {}\n}"
+        },
+        {
+            "id": 47,
+            "question": "What is method shadowing in C#?",
+            "answer": "Shadowing uses the 'new' keyword to hide a base class method, breaking polymorphism.",
+            "example": "class A { public void Show() => Console.WriteLine(\"A\"); }\nclass B : A { public new void Show() => Console.WriteLine(\"B\"); }"
+        },
+        {
+            "id": 48,
+            "question": "What is a sealed class in C#?",
+            "answer": "A sealed class can't be inherited. This helps to avoid unintended behavior changes through subclassing.",
+            "example": "sealed class Logger { public void Log() {} }"
+        },
+        {
+            "id": 49,
+            "question": "Difference between nested and partial class?",
+            "answer": "Nested class is defined inside another class. Partial class allows splitting a class across files.",
+            "example": "// Nested\nclass Outer { class Inner {} }\n// Partial\npartial class MyClass {}\npartial class MyClass {}"
+        },
+        {
+            "id": 50,
+            "question": "What are SOLID principles in C#?",
+            "answer": "SOLID are 5 principles: SRP, OCP, LSP, ISP, DIP — that help create maintainable, modular, and extensible code.",
+            "example": "// SRP: One class = one responsibility\n// OCP: Use inheritance or interface to extend\n// LSP: Derived class should substitute base\n// ISP: Break fat interfaces\n// DIP: Depend on abstractions, not concretes"
+        },
+        {
+            "id": 51,
+            "question": "Difference between Dependency Injection and IoC",
+            "answer": "IoC means transferring control of object creation to a container or external logic. DI is the technique used to achieve IoC.",
+            "example": "// Constructor injection\nclass Service { public Service(IRepo repo) {} }"
+        },
+        {
+            "id": 52,
+            "question": "What are Composition, Aggregation, and Association in OOP?",
+            "answer": "Association is general object relation. Aggregation is a weak 'has-a'; composition is strong 'owns-a'.",
+            "example": "// Association: class Teacher { Student s; }\n// Aggregation: class Department { List<Teacher> Teachers; }\n// Composition: class Car { Engine engine = new Engine(); }"
+        },
+        {
+            "id": 53,
+            "question": "What is the difference between stack and heap in memory?",
+            "answer": "Stack stores value types and method calls (fast); heap stores reference types and is garbage collected.",
+            "example": "// int x = 5; (stack)\n// MyClass obj = new MyClass(); (heap)"
+        },
+        {
+            "id": 54,
+            "question": "What is a memory leak in .NET and how to avoid it?",
+            "answer": "A memory leak occurs when memory is not released because of lingering references — like events not unsubscribed.",
+            "example": "// Avoid: publisher.SomeEvent += subscriber.Handler;\n// Use: publisher.SomeEvent -= subscriber.Handler in Dispose()"
+        }
+    ]
+}
