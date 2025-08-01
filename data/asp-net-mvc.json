@@ -1,0 +1,395 @@
+{
+    "topic": "ASP.NET MVC/Core",
+    "questions": [
+        {
+            "id": 1,
+            "question": "What is ASP.NET MVC Core?",
+            "answer": "ASP.NET Core MVC is a modern, cross-platform, high-performance web framework. It is based on the Model-View-Controller (MVC) pattern, which separates the application into three main components—Model (business/data logic), View (user interface), and Controller (handles requests and control flow). ASP.NET Core MVC supports dependency injection, unit testing, routing, middleware, and builds RESTful APIs and dynamic web apps efficiently.",
+            "example": "// Startup.cs\nservices.AddControllersWithViews();\n\n// Controller Example\npublic class HomeController : Controller {\n    public IActionResult Index() => View();\n}"
+        },
+        {
+            "id": 2,
+            "question": "Differentiate between ASP.NET WebForms vs MVC vs MVC Core.",
+            "answer": "ASP.NET WebForms uses an event-driven model and provides server controls, ViewState, and page lifecycle, which results in less control over HTML/CSS/JS. ASP.NET MVC (classic) is pattern-based, gives full control over output, supports testability, and lacks ViewState. MVC Core is a newer, cross-platform rewrite with unified pipeline, improved performance, lightweight DI support, and runs on Windows/Linux/Mac.",
+            "example": "// MVC Classic Controller\npublic ActionResult Index() => View();\n// WebForms Example: protected void Button1_Click(object sender, EventArgs e) {}"
+        },
+        {
+            "id": 3,
+            "question": "Explain MVC Architecture.",
+            "answer": "MVC splits your application into:\n- Model: Manages data, logic, rules.\n- View: UI, what the user sees.\n- Controller: Handles user input, interacts with model, selects view for response. This separation promotes code maintainability, testing, and reusability.",
+            "example": "// Example\n// Model\npublic class Product {\n  public int Id { get; set; }\n  public string Name { get; set; }\n}\n\n// Controller\npublic class ProductController : Controller {\n  public IActionResult Index() => View();\n}\n// View: Razor file shows @Model.Name"
+        },
+        {
+            "id": 4,
+            "question": "Why do we have wwwroot folder?",
+            "answer": "In ASP.NET Core, wwwroot is the standard web root for serving static files (CSS, JS, images, etc.) directly to the browser. Files inside wwwroot are accessible via the application's base URL.",
+            "example": "// Place styles.css in wwwroot/css, access via http://localhost:5000/css/styles.css"
+        },
+        {
+            "id": 5,
+            "question": "Explain the importance of appsettings.json.",
+            "answer": "The appsettings.json file stores application configuration settings such as connection strings, logging info, API keys, and custom settings. It's a flexible, JSON-based alternative to web.config and can be read at runtime, supports environment-specific overrides, and is easy to manage and version.",
+            "example": "{\n  \"ConnectionStrings\": {\n    \"DefaultConnection\": \"...\"\n  }\n}\n// Read using IConfiguration in Startup/Controllers"
+        },
+        {
+            "id": 6,
+            "question": "How to read configurations from appsettings.json?",
+            "answer": "Use the built-in IConfiguration service (injected via DI) in controllers or classes to access data. You can also create custom POCO classes and bind sections for strongly typed configs.",
+            "example": "// Inject IConfiguration\npublic class MyService {\n  private readonly IConfiguration _config;\n  public MyService(IConfiguration config) { _config = config; }\n  public string GetConnStr() => _config[\"ConnectionStrings:DefaultConnection\"];\n}"
+        },
+        {
+            "id": 7,
+            "question": "What is dependency injection?",
+            "answer": "Dependency Injection (DI) is a technique for achieving Inversion of Control (IoC) between classes and their dependencies. It allows you to provide (inject) objects that a class requires rather than the class creating them. This decouples code, simplifies testing, and improves maintainability.",
+            "example": "// In Startup.cs\nservices.AddScoped<IRepository, SqlRepository>();\n\n// In Controller\npublic MyController(IRepository repo) { }"
+        },
+        {
+            "id": 8,
+            "question": "Why do we need dependency injection?",
+            "answer": "DI enforces loose coupling, making your code easier to test and change. It lets you swap implementations for testing, mock dependencies, and manage component lifetime and scope efficiently.",
+            "example": "// Swap IRepository with MockRepository during unit testing"
+        },
+        {
+            "id": 9,
+            "question": "How do we implement dependency injection?",
+            "answer": "In ASP.NET Core, register your dependencies in the DI container in the Startup.ConfigureServices method (using AddSingleton, AddTransient, AddScoped). Dependencies are then injected via constructor injection (preferred).",
+            "example": "// Startup.cs\nservices.AddScoped<IMyService, MyService>();\n// Controller\npublic HomeController(IMyService svc) { }"
+        },
+        {
+            "id": 10,
+            "question": "What is the use of Middleware?",
+            "answer": "Middleware are delegates in the request pipeline that process HTTP requests and responses. Each middleware can perform operations before and after calling the next component, enabling cross-cutting concerns like logging, authentication, exception handling, static file handling.",
+            "example": "// Startup.cs\napp.UseMiddleware<RequestLoggingMiddleware>();"
+        },
+        {
+            "id": 11,
+            "question": "How to create a Middleware?",
+            "answer": "Create a class with a constructor that takes a RequestDelegate and an Invoke/InvokeAsync method. Register it using app.UseMiddleware<>() or app.Use().",
+            "example": "public class MyMiddleware {\n  private readonly RequestDelegate _next;\n  public MyMiddleware(RequestDelegate next) { _next = next; }\n  public async Task Invoke(HttpContext ctx) {\n    // before\n    await _next(ctx);\n    // after\n  }\n}\n\n// in Startup.cs: app.UseMiddleware<MyMiddleware>();"
+        },
+        {
+            "id": 12,
+            "question": "What does startup.cs file do?",
+            "answer": "Startup.cs configures the application's services and HTTP request pipeline. Use ConfigureServices to register services to the DI container, and Configure to specify middleware components (the processing sequence of requests). Serves as the entry point for configuring your app.",
+            "example": "// Startup.cs\npublic void ConfigureServices(IServiceCollection services) {...}\npublic void Configure(IApplicationBuilder app, ...) {...}"
+        },
+        {
+            "id": 13,
+            "question": "ConfigureServices vs Configure method?",
+            "answer": "ConfigureServices is for registering services (dependencies, configurations) required by the app. Configure is for establishing the HTTP pipeline (order of middleware). 'Services' are available via DI, 'Configure' wires up how requests are handled.",
+            "example": "// ConfigureServices: services.AddControllersWithViews();\n// Configure: app.UseRouting(); app.UseEndpoints(...);"
+        },
+        {
+            "id": 14,
+            "question": "Explain the different ways of doing DI?",
+            "answer": "ASP.NET Core supports constructor injection (most common), method injection (pass via methods), and property injection (public settable properties). Lifetimes used for registration include Singleton, Scoped, and Transient.",
+            "example": "// Constructor: public HomeController(IMyService s) { }\n// Property: public IMyService Service { get; set; }\n// Method: public void SetService(IMyService svc) { ... }"
+        },
+        {
+            "id": 15,
+            "question": "Explain Scoped vs Transient vs Singleton.",
+            "answer": "Transient: A new instance each time it's requested. Scoped: One instance per HTTP request. Singleton: One instance for the app's lifetime. Use Transient for lightweight, stateless services; Scoped for per-request logic (like DbContext); Singleton for global, thread-safe services.",
+            "example": "// Startup.cs\nservices.AddSingleton<ILogger, Logger>();\nservices.AddScoped<IRepo, Repo>();\nservices.AddTransient<ISupport, Support>();"
+        },
+        {
+            "id": 16,
+            "question": "What is Razor?",
+            "answer": "Razor is a markup syntax for embedding server-side C#/VB code in webpages (.cshtml) to generate dynamic HTML. It's lightweight, clean, and integrates tightly with .NET and MVC, supporting helpers, custom logic, and layouts.",
+            "example": "@model MyApp.Models.Product\n<h1>@Model.Name</h1>\n@if(Model.InStock) { <span>Available</span> }"
+        },
+        {
+            "id": 17,
+            "question": "How to pass Model data to a View?",
+            "answer": "Pass strongly-typed data to a view via the ActionResult in a controller:\n- As a model: return View(modelObject)\n- Or via ViewBag/ViewData for dynamic values. Using a strongly-typed model is best for clarity and compile-time checking.",
+            "example": "// Controller\npublic ActionResult Index() => View(product);\n// View:\n@model Product\n<p>@Model.Name</p>"
+        },
+        {
+            "id": 18,
+            "question": "What is the use of Strongly Typed Views?",
+            "answer": "Strongly typed views (using @model) connect views to specific model classes, providing compile-time checking, IDE autocompletion, and type safety, which reduces runtime errors and increases productivity.",
+            "example": "// In View: @model Product\n<p>@Model.Price</p>"
+        },
+        {
+            "id": 19,
+            "question": "Explain the concept of ViewModel in MVC.",
+            "answer": "A ViewModel is a class designed specifically to supply data to a view. It can aggregate multiple domain models and fields (including validation logic) tailored for a particular view, preventing overexposing domain entities and supporting separation of concerns.",
+            "example": "// ViewModel\npublic class ProductViewModel {\n  public string Name { get; set; }\n  public bool InStock { get; set; }\n}\n// Use in controller/view"
+        },
+        {
+            "id": 20,
+            "question": "What is Kestrel Web Server?",
+            "answer": "Kestrel is a cross-platform, open-source web server built by Microsoft for ASP.NET Core. It's fast, lightweight, and flexible, used for development and production, but often runs behind a reverse proxy (like IIS or Nginx) in production for enhanced security and TLS termination.",
+            "example": "// launchSettings.json\n\"webServer\": \"Kestrel\""
+        },
+        {
+            "id": 21,
+            "question": "Why Kestrel when we have IIS server?",
+            "answer": "Kestrel is included for high performance and cross-platform support. It's used as the internal HTTP server for ASP.NET Core, while IIS (Windows-only) can act as a reverse proxy for additional features. Kestrel handles HTTP/2, WebSockets, and works on Linux/Mac, broadening deployment choices.",
+            "example": "// In production: Nginx/IIS -> Kestrel"
+        },
+        {
+            "id": 22,
+            "question": "What is the concept of Reverse Proxy?",
+            "answer": "A reverse proxy server sits between users and your web server, forwarding client requests to Kestrel and serving back responses. This enables SSL termination, load balancing, caching, and application security.",
+            "example": "// Example: IIS, Nginx, Apache as reverse proxy\nclient -> Nginx/IIS -> Kestrel"
+        },
+        {
+            "id": 23,
+            "question": "What are cookies?",
+            "answer": "Cookies are small key-value data stored in browsers and sent with HTTP requests. They're commonly used for authentication, personalization, and user tracking in web apps, and can be session-based or persistent.",
+            "example": "// Set a cookie in controller:\nResponse.Cookies.Append(\"userId\", \"abc123\");"
+        },
+        {
+            "id": 24,
+            "question": "What is the need session management?",
+            "answer": "HTTP is stateless; session management lets applications remember user data across requests, enabling authentication, shopping carts, and user preferences. It's core for building interactive apps.",
+            "example": "// In ASP.NET Core:\nHttpContext.Session.SetString(\"CartId\", \"xyz\");"
+        },
+        {
+            "id": 25,
+            "question": "What are the various ways of doing Session management in ASP.NET?",
+            "answer": "ASP.NET supports session via:\n- In-memory (default)\n- Distributed (SQL Server, Redis)\n- Cookies\n- TempData (short-lived)\nChoice depends on scalability and persistence needs.",
+            "example": "// Add session in Startup.cs\nservices.AddSession();\n// Use\nHttpContext.Session.SetInt32(\"Counter\", 1);\nvar count = HttpContext.Session.GetInt32(\"Counter\");"
+        },
+        {
+            "id": 26,
+            "question": "What exactly is a session?",
+            "answer": "A session is a server-side data store that preserves user-specific information across multiple HTTP requests. It is used to maintain user state and data, such as authentication info or shopping cart contents, throughout a user's interaction with the application.",
+            "example": "// Set session value\nHttpContext.Session.SetString(\"UserName\", \"Alice\");\n// Retrieve session value\nvar user = HttpContext.Session.GetString(\"UserName\");"
+        },
+        {
+            "id": 27,
+            "question": "Explain 'HTTP is a stateless protocol'.",
+            "answer": "HTTP is stateless because each request from the client to the server is treated as an independent transaction, unrelated to any previous request. It does not store any information about previous interactions by default.",
+            "example": "// Each HTTP request:\nGET /profile\nGET /cart\n// No context unless you use Cookies or Sessions"
+        },
+        {
+            "id": 28,
+            "question": "What are various ways of doing session management?",
+            "answer": "Session management can be done using server-side sessions, client-side cookies, query strings, hidden form fields, and token-based methods (like JWTs). In ASP.NET, sessions are most commonly managed using server memory, distributed caches (Redis/SQL), and cookies.",
+            "example": "// ASP.NET Core setup\nservices.AddSession();"
+        },
+        {
+            "id": 29,
+            "question": "Are sessions enabled by default?",
+            "answer": "No, in ASP.NET Core, session management is not enabled by default. You must add and configure the session middleware in Startup.cs.",
+            "example": "// Startup.cs\nservices.AddSession();\napp.UseSession();"
+        },
+        {
+            "id": 30,
+            "question": "How to enable sessions in MVC Core?",
+            "answer": "Add the session service in ConfigureServices and the session middleware in Configure in Startup.cs.",
+            "example": "// Startup.cs\nservices.AddSession();\napp.UseSession();"
+        },
+        {
+            "id": 31,
+            "question": "Are session variables shared (global) between users?",
+            "answer": "No, session variables are unique to each user/session. Data stored in one user's session is not accessible to others.",
+            "example": "// User 1: Session[\"Theme\"] = \"Dark\"\n// User 2: Session[\"Theme\"] = \"Light\""
+        },
+        {
+            "id": 32,
+            "question": "Do session variables use cookies?",
+            "answer": "Yes, by default ASP.NET uses a cookie (usually named .AspNetCore.Session) to identify the user and link them to their session data stored on the server.",
+            "example": "// Browser receives .AspNetCore.Session cookie on first set"
+        },
+        {
+            "id": 33,
+            "question": "What is a cookie?",
+            "answer": "A cookie is a small piece of data stored on the client's browser, which can be used to track, authenticate, or maintain state about the user. Cookies are sent with every HTTP request to the server belonging to the cookie's domain.",
+            "example": "// Set cookie\nResponse.Cookies.Append(\"Color\", \"Blue\");"
+        },
+        {
+            "id": 34,
+            "question": "Explain idle time out in sessions.",
+            "answer": "Idle timeout is the duration the server will keep session data alive if there is no activity from the user. After the timeout period, the session is abandoned and user data is lost.",
+            "example": "// Startup.cs\nservices.AddSession(options => {\n    options.IdleTimeout = TimeSpan.FromMinutes(20);\n});"
+        },
+        {
+            "id": 35,
+            "question": "What does a Context mean in HTTP?",
+            "answer": "In ASP.NET, HttpContext represents all HTTP-specific information about an individual HTTP request, including request and response objects, user identity, session, and more.",
+            "example": "// Access inside controller\nvar ip = HttpContext.Connection.RemoteIpAddress;"
+        },
+        {
+            "id": 36,
+            "question": "When should we use ViewData?",
+            "answer": "Use ViewData to pass small pieces of data from controller to view or between views. It's a dictionary and uses string keys. Suitable for quick, non-strongly typed data passing.",
+            "example": "// Controller\nViewData[\"Message\"] = \"Hello!\";\n// View\n<p>@ViewData[\"Message\"]</p>"
+        },
+        {
+            "id": 37,
+            "question": "How to pass data from controller to view?",
+            "answer": "You can pass data via the model (strongly typed), ViewBag (dynamic), or ViewData (dictionary). The strongly typed model approach is recommended for most scenarios.",
+            "example": "// Model\npublic class Product { ... }\n// Controller\nreturn View(product);\n// In View\n@model Product\n<p>@Model.Name</p>"
+        },
+        {
+            "id": 38,
+            "question": "In same request can ViewData persist across actions?",
+            "answer": "No, ViewData only persists within the current request. It does not survive redirects or new action calls.",
+            "example": "// ViewData lost after RedirectToAction"
+        },
+        {
+            "id": 39,
+            "question": "ViewData vs ViewBag",
+            "answer": "Both are used to pass data from controller to view. ViewData is a dictionary of key-value pairs, accessed by string keys. ViewBag is a dynamic property wrapper around ViewData, offering more concise syntax. Both are not strongly typed and work per request.",
+            "example": "// ViewData\nViewData[\"Age\"] = 25;\n// ViewBag\nViewBag.Age = 25;"
+        },
+        {
+            "id": 40,
+            "question": "How does ViewBag work internally?",
+            "answer": "ViewBag uses C# dynamic features and is essentially a wrapper around ViewData. When you set ViewBag.SomeValue, it sets ViewData[\"SomeValue\"] under the hood.",
+            "example": "// Equivalent:\nViewBag.Prop = \"x\";\nViewData[\"Prop\"] = \"x\";"
+        },
+        {
+            "id": 41,
+            "question": "Explain ViewModel?",
+            "answer": "A ViewModel is a custom class tailored to the data required by a specific view. It may comprise properties from several domain models as well as UI-only data. ViewModels help isolate UI concerns and simplify data transfer to the view.",
+            "example": "// ViewModel\npublic class ProfileVM {\n    public string Name {get; set;}\n    public List<Order> Orders {get; set;}\n}"
+        },
+        {
+            "id": 42,
+            "question": "ViewBag vs ViewModel: what's the best practice?",
+            "answer": "Use ViewModels for structured, strongly-typed views and complex data. Use ViewBag or ViewData for passing small, ad hoc or supplementary data. ViewModels are preferred for maintainability and code clarity.",
+            "example": "// Best: return View(viewModel);"
+        },
+        {
+            "id": 43,
+            "question": "Explain TempData.",
+            "answer": "TempData is a storage mechanism to pass data from one request to another (i.e., from one action to another, often across redirects). It uses session under the hood and values are available only for a single subsequent request.",
+            "example": "// Set in one action\nTempData[\"Status\"] = \"Saved\";\n// Read in next action\nvar msg = TempData[\"Status\"];"
+        },
+        {
+            "id": 44,
+            "question": "Can TempData persist across action redirects?",
+            "answer": "Yes, TempData is specifically designed to persist data across redirects (new HTTP requests). Data is available on the next request and is then marked for deletion.",
+            "example": "// TempData available after RedirectToAction"
+        },
+        {
+            "id": 45,
+            "question": "How is TempData different from ViewData?",
+            "answer": "ViewData lasts only for the current request (from controller to view in one request). TempData persists data for the next request, which is useful during redirects.",
+            "example": "// Use TempData for passing status messages after redirects"
+        },
+        {
+            "id": 46,
+            "question": "If TempData is read is it available for next request?",
+            "answer": "No, reading TempData marks the value for deletion. If you need TempData for another request, use TempData.Keep(\"key\").",
+            "example": "// Keep value alive for another request\nTempData.Keep(\"Status\");"
+        },
+        {
+            "id": 47,
+            "question": "How to persist TempData?",
+            "answer": "Call TempData.Keep() within your action or view to preserve TempData values for additional requests.",
+            "example": "// TempData.Keep(\"MyKey\");"
+        },
+        {
+            "id": 48,
+            "question": "What does Keep do in TempData?",
+            "answer": "TempData.Keep marks data as not to be deleted after it is read, allowing it to persist for another request.",
+            "example": "// TempData.Keep(); // keeps all values"
+        },
+        {
+            "id": 49,
+            "question": "Explain Peek in TempData.",
+            "answer": "TempData.Peek reads a key’s value without marking it for deletion, so the value remains available for subsequent requests.",
+            "example": "// Peek usage\nvar val = TempData.Peek(\"Key\");"
+        },
+        {
+            "id": 50,
+            "question": "How is TempData different from session variables?",
+            "answer": "TempData is for short-lived data—a single redirect/view. Session variables persist as long as the session is active. TempData auto-expires, session persists until timeout.",
+            "example": "// TempData for one-redirect status\n// Session for user profile or cart"
+        },
+        {
+            "id": 51,
+            "question": "If I restart the server does TempData, session stay?",
+            "answer": "By default, both TempData (since it uses Session) and Session data are lost if the server restarts unless a distributed session store (e.g., Redis, SQL Server) is configured.",
+            "example": "// Use AddDistributedSqlServerCache for persistence"
+        },
+        {
+            "id": 52,
+            "question": "Is TempData private to a user?",
+            "answer": "Yes, TempData (as it uses Session) is private and unique to each user/session.",
+            "example": "// User A's TempData is not visible to User B"
+        },
+        {
+            "id": 53,
+            "question": "ViewData vs ViewBag vs TempData vs Session variables.",
+            "answer": "- ViewData/ViewBag: Used to pass data from controller to view, per request.\n- TempData: Passes data across requests (redirects), auto-expires.\n- Session: Stores data across user sessions, persists till timeout or logout.",
+            "example": "// ViewBag.X = ...\n// TempData[\"Status\"] = ...\n// Session.SetString(\"Name\", \"A\")"
+        },
+        {
+            "id": 54,
+            "question": "What is WebAPI?",
+            "answer": "ASP.NET WebAPI is a framework for building HTTP services for a broad range of clients (browsers, mobile, desktop). It is used for creating RESTful services using HTTP methods (GET, POST, PUT, DELETE).",
+            "example": "// Controller example\n[ApiController]\n[Route(\"api/[controller]\")]\npublic class ProductsController : ControllerBase {\n  [HttpGet]\n  public IEnumerable<Product> GetAll() { ... }\n}"
+        },
+        {
+            "id": 55,
+            "question": "What is the advantage of WebAPI?",
+            "answer": "WebAPI is lightweight, supports REST principles, easy to develop, consumes a wide range of clients, supports content negotiation (returns JSON/XML), and integrates with ASP.NET routing and serialization.",
+            "example": "// Example: Serve JSON or XML based on Accept headers"
+        },
+        {
+            "id": 56,
+            "question": "Explain REST and Architectural constraints of REST?",
+            "answer": "REST (Representational State Transfer) is an architectural style for creating scalable web services. Its constraints include: statelessness, client-server architecture, cacheability, uniform interface, layered system, and optional code-on-demand.",
+            "example": "// API endpoint\nGET /api/products/1\n// Stateless, uniform URLs"
+        },
+        {
+            "id": 57,
+            "question": "Can we use TCP/IP protocol with Web API?",
+            "answer": "ASP.NET WebAPI is designed for HTTP/S. While HTTP uses TCP/IP, direct TCP socket communication is not supported natively. For non-HTTP protocols, consider using WCF or SignalR.",
+            "example": "// WebAPI --> HTTP --> TCP\n// WCF for TCP endpoint"
+        },
+        {
+            "id": 58,
+            "question": "How is WebAPI different from MVC controller?",
+            "answer": "WebAPI controllers are optimized for HTTP-based services (usually returning data, not views), use ControllerBase, and return data objects (e.g., JSON). MVC controllers return views for rendering HTML UI.",
+            "example": "// API returns JSON, MVC returns ViewResult"
+        },
+        {
+            "id": 59,
+            "question": "What is content negotiation in Web API?",
+            "answer": "Content negotiation is the process where the client and server decide the format of data (JSON, XML, etc.) based on Accept headers in the HTTP request. WebAPI supports automatic negotiation.",
+            "example": "// Accept: application/xml --> returns XML; Accept: application/json --> returns JSON"
+        },
+        {
+            "id": 60,
+            "question": "WebAPI vs WCF?",
+            "answer": "WebAPI is suited for RESTful, HTTP-based, resource-oriented services and is simpler to use. WCF is for SOAP, TCP, MSMQ, and complex enterprise integrations requiring various bindings and protocols.",
+            "example": "// WebAPI for HTTP JSON APIs; WCF for SOAP or TCP legacy services"
+        },
+        {
+            "id": 61,
+            "question": "WCF REST vs WebAPI REST?",
+            "answer": "WCF REST can expose RESTful endpoints but is more complex and not as flexible or straightforward as WebAPI, which is natively RESTful, easier to configure, and supports modern conventions.",
+            "example": "// Prefer WebAPI for modern REST services"
+        },
+        {
+            "id": 62,
+            "question": "How to return HTTP status codes?",
+            "answer": "In WebAPI/action methods, you can return status codes using helper methods like Ok(), NotFound(), BadRequest(), etc., or return custom HttpResponseMessage.",
+            "example": "// return Ok(product); return NotFound(); return StatusCode(500);"
+        },
+        {
+            "id": 63,
+            "question": "For error which status code is returned?",
+            "answer": "Typical error codes include 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), 404 (Not Found), and 500 (Internal Server Error). Choose the code that best matches the error scenario.",
+            "example": "// return BadRequest(); // 400\n// return NotFound(); // 404"
+        },
+        {
+            "id": 64,
+            "question": "How did you secure your web API?",
+            "answer": "Common approaches include authentication (JWT, OAuth2, cookie-based), authorization (role/claim-based), HTTPS only, CORS policy enforcement, and input validation. ASP.NET Core offers [Authorize] attribute and authentication middleware.",
+            "example": "// Use [Authorize] attribute\n[Authorize]\npublic class SecureController : ControllerBase { }"
+        },
+        {
+            "id": 65,
+            "question": "How do current JS frameworks work with webAPI?",
+            "answer": "Modern JS frameworks (Angular, React, Vue) interact with WebAPI via AJAX/fetch/axios, sending HTTP requests for data, and then binding responses to UI components. WebAPI acts as the backend layer for frontend Single Page Applications (SPAs).",
+            "example": "// JavaScript\nfetch('/api/products')\n  .then(res => res.json())\n  .then(data => console.log(data));"
+        }
+    ]
+}

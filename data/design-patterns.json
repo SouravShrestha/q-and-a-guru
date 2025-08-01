@@ -1,0 +1,149 @@
+{
+  "topic": "Design Patterns – Singleton, CQRS, Factory",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Explain Singleton Pattern and the use of the same?",
+      "answer": "The Singleton Pattern ensures a class has only one instance and provides a global point of access to it. It's commonly used for configuration, logging, caching, or resource sharing where a single shared resource is needed throughout the application.",
+      "example": "// Logger is a classic Singleton example\npublic sealed class Logger {\n  private static Logger _instance;\n  private Logger() {}\n  public static Logger Instance => _instance ??= new Logger();\n}"
+    },
+    {
+      "id": 2,
+      "question": "How did you implement singleton pattern?",
+      "answer": "Implement Singleton with a private constructor, a static property or method that creates and returns the unique instance, and often a static read-only field to hold the instance.",
+      "example": "public sealed class Singleton {\n  private static readonly Singleton _instance = new Singleton();\n  private Singleton() {}\n  public static Singleton Instance => _instance;\n}"
+    },
+    {
+      "id": 3,
+      "question": "Can we use Static class rather than using a private constructor?",
+      "answer": "Static classes can offer similar functionality but differ from singletons: static classes cannot be instantiated, cannot implement interfaces, and do not support inheritance, whereas Singleton can. Use static classes for stateless utility operations, Singleton for managing state/resources.",
+      "example": "// Static utility class\npublic static class MathHelper {\n  public static int Add(int x, int y) => x + y;\n}"
+    },
+    {
+      "id": 4,
+      "question": "Static vs Singleton pattern?",
+      "answer": "Static classes cannot maintain instance state, implement interfaces, or be passed as dependencies (e.g., for testing/mocking); Singleton allows a single instance with a controlled lifecycle, often for shared resource access or dependency injection. Singletons can be extended and support interfaces.",
+      "example": "// Singleton holds state\nauto logger = Logger.Instance;\n// Static has only static methods/properties"
+    },
+    {
+      "id": 5,
+      "question": "How did you implement thread safety in Singleton?",
+      "answer": "Use locking or static initializers to ensure the Singleton instance is created only once, even with concurrent threads. The 'double-check locking' method or static constructors achieve thread safety.",
+      "example": "private static readonly object _lock = new object();\nprivate static Singleton _instance;\npublic static Singleton Instance {\n  get {\n    if (_instance == null) {\n      lock(_lock) {\n        if (_instance == null)\n          _instance = new Singleton();\n      }\n    }\n    return _instance;\n  }\n}"
+    },
+    {
+      "id": 6,
+      "question": "What is double null check in Singleton?",
+      "answer": "Double-check locking is a concurrency pattern that checks if the Singleton instance is null both before and after acquiring a lock—reducing lock overhead but ensuring only one instance is created in a multi-threaded environment.",
+      "example": "// See above thread-safe singleton example"
+    },
+    {
+      "id": 7,
+      "question": "Can Singleton pattern code be made easy with Lazy keyword?",
+      "answer": "Yes, the Lazy<T> class simplifies and thread-safes Singleton initialization. Lazy guarantees that the instance is created only when first accessed and is thread-safe.",
+      "example": "private static readonly Lazy<Singleton> _lazyInstance = new Lazy<Singleton>(() => new Singleton());\npublic static Singleton Instance => _lazyInstance.Value;"
+    },
+    {
+      "id": 8,
+      "question": "Can we rid of this double null check code?",
+      "answer": "Yes. Using static initializers, Lazy<T>, or static readonly fields in .NET guarantees thread-safe, single instantiation without explicit double-check lock code.",
+      "example": "// Eager static readonly field\nprivate static readonly Singleton _instance = new Singleton();\n// Or Lazy<T> as above"
+    },
+    {
+      "id": 9,
+      "question": "Explain CQRS pattern?",
+      "answer": "CQRS stands for Command Query Responsibility Segregation. It separates read (query) and write (command) concerns into different models/services, improving scalability, maintainability, and flexibility for complex applications.",
+      "example": "// ICommand & IQuery marker interfaces\n// Separate CommandHandler and QueryHandler classes"
+    },
+    {
+      "id": 10,
+      "question": "What is the benefit of CQRS?",
+      "answer": "Benefits: independently scale read/write sides, clearer separation of concerns, optimized data model for each side, easier to evolve/maintain, supports event-sourcing and complex business logic.",
+      "example": "// Read model: denormalized for fast queries\n// Write: uses robust validation and domain logic"
+    },
+    {
+      "id": 11,
+      "question": "Explain CommandHandler class?",
+      "answer": "A CommandHandler handles a specific command (write/action), containing the business logic required for a state-changing operation. Each command usually has one handler class.",
+      "example": "public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid> {\n  public Task<Guid> Handle(CreateOrderCommand cmd, CancellationToken ct) {\n    //... business logic to create order\n  }\n}"
+    },
+    {
+      "id": 12,
+      "question": "What is the importance of GUID in CQRS?",
+      "answer": "GUIDs (Globally Unique Identifiers) uniquely identify commands, aggregates, or events—ensuring idempotency, tracking, and easy referencing across distributed systems.",
+      "example": "public record CreateOrderCommand(Guid OrderId, ...) {}"
+    },
+    {
+      "id": 13,
+      "question": "Is CQRS pattern compulsory?",
+      "answer": "No, CQRS is not compulsory and adds complexity. It's best for systems with complex business logic, high-volume reads/writes, or microservice architectures. For simple CRUD, traditional CRUD patterns are easier.",
+      "example": "// Use standard controller/services for simple apps; CQRS for complex/domains"
+    },
+    {
+      "id": 14,
+      "question": "Are Models and CQRS classes same?",
+      "answer": "No. Domain models represent business entities/logic, while CQRS request/response classes (commands, queries, handlers) are specific to operation flows. Read/write models are often different to optimize for their purpose.",
+      "example": "// Model: Order, Customer, etc.\n// CQRS: CreateOrderCommand, GetOrderQuery, ...\n// May contain subsets/views"
+    },
+    {
+      "id": 15,
+      "question": "What is the use of Mediatr?",
+      "answer": "MediatR is a .NET library that coordinates command/query handling—decoupling senders from handlers. It simplifies CQRS and in-process messaging by routing requests to the appropriate handlers using dependency injection.",
+      "example": "// Register handlers in DI; send commands/queries via IMediator"
+    },
+    {
+      "id": 16,
+      "question": "What is importance of Aggregate root in CQRS?",
+      "answer": "Aggregate Root is an entity in Domain-Driven Design that acts as an entry point for an aggregate—a cluster of objects treated as a single unit. In CQRS, commands target the aggregate root to enforce invariants and transactional consistency.",
+      "example": "// class OrderAggregateRoot { void AddItem(...); void Complete(); }"
+    },
+    {
+      "id": 17,
+      "question": "What is event sourcing in CQRS and is it compulsory?",
+      "answer": "Event sourcing stores all state changes as a sequence of immutable events, rather than only storing current state. It enables replay, audit, recovery, and temporal queries. It’s optional—a CQRS system can use standard persistence instead.",
+      "example": "// Event: OrderCreated, ItemAdded, etc.\n// Store and replay to reconstruct aggregate"
+    },
+    {
+      "id": 18,
+      "question": "What are projections, read projections?",
+      "answer": "A projection is a specialized data model generated from events or commands, optimized for specific query/views (read models). Projections denormalize data for fast reads and reporting.",
+      "example": "// When OrderCreatedEvent occurs, update OrdersReadModel table"
+    },
+    {
+      "id": 19,
+      "question": "Which event sourcing DB have you used?",
+      "answer": "Common event sourcing DBs include EventStoreDB, Apache Kafka, Cosmos DB (for event sourcing), or a custom events table in SQL/NoSQL database.",
+      "example": "// Example: Save events to EventStoreDB with append/read methods"
+    },
+    {
+      "id": 20,
+      "question": "Why do we need Factory pattern?",
+      "answer": "The Factory Pattern abstracts the process of creating objects, allowing code to instantiate objects without tightly coupling to specific concrete classes. Helps with object creation control, extensibility, and loose coupling.",
+      "example": "// Interface\ninterface IAnimal { void Speak(); }\n// Factories\nclass Dog : IAnimal { ... }\nclass AnimalFactory {\n  public static IAnimal Create(string type) => type == \"Dog\" ? new Dog() : ...;\n}"
+    },
+    {
+      "id": 21,
+      "question": "What is the implication of new Keyword?",
+      "answer": "The 'new' keyword directly couples your code to specific implementations, hindering extensibility and testability. Overusing 'new' complicates changes and swapping implementations (violates Dependency Inversion).",
+      "example": "// Avoid:\nvar car = new Sedan(); // tightly coupled"
+    },
+    {
+      "id": 22,
+      "question": "Factory pattern helps for loose coupling, Explain?",
+      "answer": "By delegating object creation to a factory, the calling code relies on abstractions (interfaces/base classes), not concrete types. This decouples dependencies, eases unit testing, and supports Dependency Injection.",
+      "example": "// Car factory returns ICar; consumer doesn't care about exact concrete type."
+    },
+    {
+      "id": 23,
+      "question": "What is DI and IOC?",
+      "answer": "Dependency Injection (DI) is a technique where objects receive their dependencies from external sources rather than creating them. Inversion of Control (IoC) is a general pattern where control of object creation and binding is transferred from the code itself to a container or framework.",
+      "example": "// Register in IoC container: services.AddTransient<IService, RealService>();\n// Framework 'injects' dependency where needed"
+    },
+    {
+      "id": 24,
+      "question": "The real factory pattern?",
+      "answer": "The 'real' (or classic) Factory Pattern defines a factory interface or abstract class for object creation and implements concrete factories for each object type. The client uses the factory interface to create products, not knowing the exact concrete type.",
+      "example": "interface IProductFactory {\n  IProduct CreateProduct();\n}\nclass ConcreteFactoryA : IProductFactory {\n  public IProduct CreateProduct() => new ProductA();\n}"
+    }
+  ]
+}

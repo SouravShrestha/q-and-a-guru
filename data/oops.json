@@ -1,0 +1,167 @@
+{
+  "topic": "Object-Oriented Programming",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Why do we need OOP?",
+      "answer": "OOP helps organize complex code by modeling real-world entities as objects, which encapsulate data and behavior. This promotes modularity, code reuse via inheritance, easier maintenance, and scalability, especially in large applications.",
+      "example": "// Example: Car class encapsulates properties and behaviors of a real-world car\npublic class Car {\n  public string Brand { get; set; }\n  public void Drive() {\n    Console.WriteLine(\"Driving the car...\");\n  }\n}\n\nvar car = new Car { Brand = \"Toyota\" };\ncar.Drive();"
+    },
+    {
+      "id": 2,
+      "question": "What are the important pillars in OOP?",
+      "answer": "The four pillars of OOP are:\n- Encapsulation: Bundling data and methods that operate on data within objects, hiding internal state.\n- Abstraction: Simplifying complex reality by modeling classes appropriate to the problem.\n- Inheritance: Reusing properties and methods from existing classes.\n- Polymorphism: Ability of different classes to be treated through a common interface, enabling multiple behaviors.",
+      "example": "// Example demonstrating pillars:\npublic abstract class Animal {\n  public string Name { get; set; } // Encapsulation\n  public abstract void Speak(); // Abstraction\n}\n\npublic class Dog : Animal {\n  public override void Speak() { Console.WriteLine(\"Bark\"); } // Polymorphism\n}\n\npublic class Cat : Animal {\n  public override void Speak() { Console.WriteLine(\"Meow\"); } // Polymorphism\n}"
+    },
+    {
+      "id": 3,
+      "question": "What is a Class and Object?",
+      "answer": "A class is a blueprint or template defining the properties and behaviors (methods) that the objects created from the class will have. An object is an instance of a class, created in memory and representing an entity with actual data.",
+      "example": "public class Dog {\n  public string Name; // property\n  public void Bark() {\n    Console.WriteLine($\"{Name} says: Woof!\");\n  }\n}\n\n// Creating an object (instance)\nvar dog = new Dog { Name = \"Tommy\" };\ndog.Bark();"
+    },
+    {
+      "id": 4,
+      "question": "Abstraction VS Encapsulation?",
+      "answer": "Abstraction hides complex implementation details and shows only necessary features to the user. Encapsulation restricts direct access to some of an object’s components, protecting internal object state and enforcing controlled interaction through methods.",
+      "example": "public class BankAccount {\n    private double balance;  // Encapsulated data: hidden from outside\n    \n    // Abstraction: user sees simple deposit/withdraw methods, not internal workings\n    public void Deposit(double amount) {\n        if (amount > 0) balance += amount;\n    }\n    public double GetBalance() {\n        return balance;\n    }\n}"
+    },
+    {
+      "id": 5,
+      "question": "Explain Inheritance?",
+      "answer": "Inheritance allows one class (derived class) to inherit fields and methods from another class (base class), promoting code reuse and establishing an 'is-a' relationship.",
+      "example": "public class Animal {\n    public void Eat() {\n        Console.WriteLine(\"Eating...\");\n    }\n}\n\npublic class Dog : Animal {\n    // Dog inherits Eat method\n    public void Bark() {\n        Console.WriteLine(\"Barking...\");\n    }\n}\n\nvar dog = new Dog();\ndog.Eat(); // inherited\n"
+    },
+    {
+      "id": 6,
+      "question": "Explain Virtual Keyword?",
+      "answer": "The `virtual` keyword in a base class method declares that method can be overridden in any derived class, enabling runtime polymorphism.",
+      "example": "public class Base {\n  public virtual void Speak() {\n    Console.WriteLine(\"Base speaking\");\n  }\n}\n\npublic class Derived : Base {\n  public override void Speak() {\n    Console.WriteLine(\"Derived speaking\");\n  }\n}"
+    },
+    {
+      "id": 7,
+      "question": "What is Overriding?",
+      "answer": "Overriding is the process by which a derived class redefines a base class’s virtual method, providing a new implementation.",
+      "example": "public class Parent {\n  public virtual void Work() {\n    Console.WriteLine(\"Parent working\");\n  }\n}\n\npublic class Child : Parent {\n  public override void Work() {\n    Console.WriteLine(\"Child working\");\n  }\n}"
+    },
+    {
+      "id": 8,
+      "question": "Explain Overloading?",
+      "answer": "Overloading allows creating multiple methods in the same scope with the same name but different parameter lists (different types, number, or order), enabling compile-time polymorphism.",
+      "example": "public class MathOps {\n  public int Add(int a, int b) {\n    return a + b;\n  }\n  public double Add(double a, double b) {\n    return a + b;\n  }\n  public int Add(int a, int b, int c) {\n    return a + b + c;\n  }\n}"
+    },
+    {
+      "id": 9,
+      "question": "Overloading VS Overriding?",
+      "answer": "Overloading is when methods share the same name but differ in parameter signature within the same class (compile-time polymorphism). Overriding redefines an inherited virtual method in a derived class (run-time polymorphism).",
+      "example": "// Overloading example\nclass Example {\n    public void Show(int a) { Console.WriteLine(a); }\n    public void Show(string a) { Console.WriteLine(a); } // Overloaded method\n}\n\n// Overriding example\nclass Base {\n  public virtual void Greet() { Console.WriteLine(\"Hi\"); }\n}\nclass Derived : Base {\n  public override void Greet() { Console.WriteLine(\"Hello\"); }\n}"
+    },
+    {
+      "id": 10,
+      "question": "What is Polymorphism?",
+      "answer": "Polymorphism allows objects of different classes to be treated as instances of the same class through a common interface, enabling a single interface to represent different underlying forms (behaviors).",
+      "example": "public class Base {\n  public virtual void Speak() {\n    Console.WriteLine(\"Base speaking\");\n  }\n}\n\npublic class Derived : Base {\n  public override void Speak() {\n    Console.WriteLine(\"Derived speaking\");\n  }\n}\n\nBase b = new Derived();\nb.Speak(); // Output: Derived speaking"
+    },
+    {
+      "id": 11,
+      "question": "Can Polymorphism work without Inheritance?",
+      "answer": "Yes. Polymorphism can be achieved without inheritance through interfaces (which define contracts) and method overloading (compile-time polymorphism).",
+      "example": "public interface IRun {\n  void Run();\n}\n\npublic class Cat : IRun {\n  public void Run() {\n    Console.WriteLine(\"Cat running\");\n  }\n}"
+    },
+    {
+      "id": 12,
+      "question": "Explain Static VS Dynamic Polymorphism?",
+      "answer": "Static polymorphism (compile-time) is achieved by method overloading or operator overloading, resolved during compilation. Dynamic polymorphism (run-time) is achieved by method overriding through virtual methods and inheritance, resolved at runtime.",
+      "example": "// Static\nvoid Greet(string name) { Console.WriteLine(\"Hello, \" + name); }\nvoid Greet(int id) { Console.WriteLine(\"Hello, user #\" + id); }\n\n// Dynamic\nclass Base {\n  public virtual void Talk() { Console.WriteLine(\"Base talking\"); }\n}\nclass Sub : Base {\n  public override void Talk() { Console.WriteLine(\"Sub talking\"); }\n}"
+    },
+    {
+      "id": 13,
+      "question": "Explain Operator Overloading?",
+      "answer": "Operator overloading allows custom types to redefine the behavior of operators (like +, -, *, etc.) to work intuitively with those types.",
+      "example": "public class Point {\n  public int X, Y;\n\n  public static Point operator +(Point a, Point b) {\n    return new Point { X = a.X + b.X, Y = a.Y + b.Y };\n  }\n}"
+    },
+    {
+      "id": 14,
+      "question": "How to do Custom Operator Overloading?",
+      "answer": "You overload operators by defining a `public static` method named `operator` followed by the operator symbol inside your class, specifying operands and return type.",
+      "example": "public class Money {\n  public int Amount;\n\n  public static Money operator +(Money m1, Money m2) {\n    return new Money { Amount = m1.Amount + m2.Amount };\n  }\n}"
+    },
+    {
+      "id": 15,
+      "question": "Why do we need Abstract Classes?",
+      "answer": "Abstract classes let you define incomplete classes that provide some base functionality while forcing derived classes to implement specific abstract methods. This enforces a common contract and reuse.",
+      "example": "public abstract class Shape {\n  // Abstract method: no implementation here\n  public abstract double Area();\n  \n  // Concrete method\n  public void Display() {\n    Console.WriteLine($\"Area: {Area()}\");\n  }\n}"
+    },
+    {
+      "id": 16,
+      "question": "Are Abstract methods Virtual?",
+      "answer": "Yes, abstract methods are implicitly virtual as they expect derived classes to provide overrides.",
+      "example": "public abstract class Animal {\n  public abstract void MakeSound(); // implicitly virtual, must be overridden\n}"
+    },
+    {
+      "id": 17,
+      "question": "Can we create an instance of Abstract Classes?",
+      "answer": "No. You cannot instantiate abstract classes directly because they may contain incomplete methods without implementations.",
+      "example": "// Abstract class instance not allowed\n// Shape s = new Shape(); // Compilation error"
+    },
+    {
+      "id": 18,
+      "question": "Is it compulsory to implement Abstract Methods?",
+      "answer": "Yes, any concrete (non-abstract) class deriving from an abstract class must implement all abstract methods.",
+      "example": "public class Rectangle : Shape {\n  public override double Area() {\n    return 10 * 5; // concrete implementation\n  }\n}"
+    },
+    {
+      "id": 19,
+      "question": "Why simple base class cannot replace Abstract Classes?",
+      "answer": "A normal base class cannot force derived classes to implement specific methods, whereas abstract classes can enforce this contract with abstract methods, ensuring consistency.",
+      "example": "// Abstract class forces derived classes to implement Area()\npublic abstract class Shape {\n  public abstract double Area();\n}\n// Base class without abstract methods has no such enforcement."
+    },
+    {
+      "id": 20,
+      "question": "Explain Interface and Why do we need it?",
+      "answer": "An interface defines a contract that classes must follow, specifying method signatures without implementations. Interfaces enable loose coupling and multiple inheritance of behaviors in languages like C# that restrict class inheritance to single base class.",
+      "example": "public interface IWorker {\n  void Work();\n}\n\npublic class Developer : IWorker {\n  public void Work() {\n    Console.WriteLine(\"Writing code\");\n  }\n}"
+    },
+    {
+      "id": 21,
+      "question": "Can we write logic in Interface?",
+      "answer": "Yes. Since C# 8.0, interfaces can include default implementations for methods (default interface methods), enabling shared behavior without breaking existing implementations.",
+      "example": "public interface ILogger {\n  void Log(string message);\n  \n  // Default implementation\n  void Info(string msg) => Console.WriteLine($\"INFO: {msg}\");\n}"
+    },
+    {
+      "id": 22,
+      "question": "Can we define methods as private in Interface?",
+      "answer": "Yes, from C# 8.0 onwards, interfaces can contain private methods (mostly static) to share helper code within the interface itself.",
+      "example": "public interface IDemo {\n  private static void Helper() {\n    Console.WriteLine(\"Helping...\");\n  }\n\n  void PublicMethod() {\n    Helper();\n  }\n}"
+    },
+    {
+      "id": 23,
+      "question": "To change Interface what's the best practice?",
+      "answer": "To avoid breaking existing implementations, it's best to create a new interface (like `IShapeV2`) with added members rather than modifying an existing interface directly.",
+      "example": "// Instead of modifying existing interface\ninterface IShape {\n  double Area();\n}\n// Create new interface\ninterface IShapeV2 : IShape {\n  double Perimeter();\n}"
+    },
+    {
+      "id": 24,
+      "question": "Explain Multiple Inheritance in Interfaces?",
+      "answer": "Classes can implement multiple interfaces, allowing a class to inherit contracts and capabilities from more than one interface, overcoming the single inheritance limitation of classes.",
+      "example": "interface IPrintable {\n  void Print();\n}\ninterface IScannable {\n  void Scan();\n}\n\nclass MultiFunctionDevice : IPrintable, IScannable {\n  public void Print() { Console.WriteLine(\"Printing...\"); }\n  public void Scan() { Console.WriteLine(\"Scanning...\"); }\n}"
+    },
+    {
+      "id": 25,
+      "question": "Explain Interface Segregation Principle?",
+      "answer": "The Interface Segregation Principle encourages designing smaller, specific interfaces rather than large, general ones, so that implementing classes aren't forced to implement methods they don't need.",
+      "example": "interface IPrinter { void Print(); }\ninterface IScanner { void Scan(); }\n\nclass Printer : IPrinter {\n  public void Print() { Console.WriteLine(\"Printing document\"); }\n}\n\nclass Scanner : IScanner {\n  public void Scan() { Console.WriteLine(\"Scanning document\"); }\n}"
+    },
+    {
+      "id": 26,
+      "question": "Can we create instance of Interface?",
+      "answer": "No, interfaces cannot be directly instantiated since they only define method signatures without implementations.",
+      "example": "// IWorker worker = new IWorker(); // Compilation error"
+    },
+    {
+      "id": 27,
+      "question": "Can we do multiple inheritance of Interface?",
+      "answer": "Yes, classes can implement multiple interfaces, effectively supporting multiple inheritance of behavior.",
+      "example": "interface I1 {\n  void A();\n}\ninterface I2 {\n  void B();\n}\n\nclass C : I1, I2 {\n  public void A() { Console.WriteLine(\"A\"); }\n  public void B() { Console.WriteLine(\"B\"); }\n}"
+    }
+  ]
+}
