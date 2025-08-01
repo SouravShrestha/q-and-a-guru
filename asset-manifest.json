@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/q-and-a-guru/static/css/main.4f9f65fe.css",
-    "main.js": "/q-and-a-guru/static/js/main.8530f2bc.js",
+    "main.css": "/q-and-a-guru/static/css/main.2085c6c2.css",
+    "main.js": "/q-and-a-guru/static/js/main.57bea7d9.js",
+    "static/media/RobotoFlex.ttf": "/q-and-a-guru/static/media/RobotoFlex.f700cdc3d6dd6bdaebd3.ttf",
     "index.html": "/q-and-a-guru/index.html",
-    "main.4f9f65fe.css.map": "/q-and-a-guru/static/css/main.4f9f65fe.css.map",
-    "main.8530f2bc.js.map": "/q-and-a-guru/static/js/main.8530f2bc.js.map"
+    "main.2085c6c2.css.map": "/q-and-a-guru/static/css/main.2085c6c2.css.map",
+    "main.57bea7d9.js.map": "/q-and-a-guru/static/js/main.57bea7d9.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f9f65fe.css",
-    "static/js/main.8530f2bc.js"
+    "static/css/main.2085c6c2.css",
+    "static/js/main.57bea7d9.js"
   ]
 }
