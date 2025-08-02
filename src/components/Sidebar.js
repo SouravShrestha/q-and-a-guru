@@ -25,7 +25,6 @@ const Sidebar = ({ headerHeight, sidebarOpen, setSidebarOpen, files, selectedFil
             setSidebarOpen(false);
           }}
         >
-            <span className="mr-2">[{`${idx + 1}`}]</span>
             <span className="">{fileTopics[file.name] || "Loading..."}</span>
         </button>
       ))}
