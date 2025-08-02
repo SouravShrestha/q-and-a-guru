@@ -117,9 +117,16 @@ const MainContent = ({ headerHeight, questionsData, openIndices, handleToggle })
             </button>
             {openIndices.includes(idx) && (
               <div className="md:px-4 py-3 cursor-pointer">
-                <div className="tracking-wide leading-7 mb-4">
-                  {highlightText(q.answer)}
-                </div>
+              <div className="tracking-wide leading-7 mb-4">
+                {String(q.answer)
+                  .split(/\r?\n/)
+                  .map((line, i, arr) => (
+                    <span key={i}>
+                      {highlightText(line)}
+                      {i < arr.length - 1 && <br />}
+                    </span>
+                  ))}
+              </div>
                 {q.example && (
                   <SyntaxHighlighter
                     language="csharp"

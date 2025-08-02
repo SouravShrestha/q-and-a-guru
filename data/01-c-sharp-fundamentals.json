@@ -4,7 +4,7 @@
       {
         "id": 1,
         "question": "Explain difference between .NET and C#?",
-        "answer": "C# is a programming language; .NET is the platform it runs on.\n\n.NET provides the runtime, libraries, and tools to build applications. It supports multiple languages (C#, F#, VB.NET).\n\nC# is mainly used with .NET but can be used with other runtimes like Mono (e.g., Unity).\n\nAnalogy: .NET is the engine, C# is the driver.",
+        "answer": "C# is a programming language; .NET is the platform it runs on.\n.NET provides the runtime, libraries, and tools to build applications. It supports multiple languages (C#, F#, VB.NET).\nC# is mainly used with .NET but can be used with other runtimes like Mono (e.g., Unity).\nAnalogy: .NET is the engine, C# is the driver.",
         "example": "// C# code running on .NET\npublic class HelloWorld {\n    public static void Main() {\n        Console.WriteLine(\"Hello from C#\");\n    }\n}"
       },
       {
