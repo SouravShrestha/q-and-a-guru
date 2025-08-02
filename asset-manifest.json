@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/q-and-a-guru/static/css/main.2431b620.css",
-    "main.js": "/q-and-a-guru/static/js/main.c37161d5.js",
+    "main.js": "/q-and-a-guru/static/js/main.b921951d.js",
     "static/media/RobotoFlex.ttf": "/q-and-a-guru/static/media/RobotoFlex.f700cdc3d6dd6bdaebd3.ttf",
     "static/media/brain.png": "/q-and-a-guru/static/media/brain.06a2c57f1d83ed549496.png",
     "index.html": "/q-and-a-guru/index.html",
     "main.2431b620.css.map": "/q-and-a-guru/static/css/main.2431b620.css.map",
-    "main.c37161d5.js.map": "/q-and-a-guru/static/js/main.c37161d5.js.map"
+    "main.b921951d.js.map": "/q-and-a-guru/static/js/main.b921951d.js.map"
   },
   "entrypoints": [
     "static/css/main.2431b620.css",
-    "static/js/main.c37161d5.js"
+    "static/js/main.b921951d.js"
   ]
 }
