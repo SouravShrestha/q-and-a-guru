@@ -1,0 +1,137 @@
+{
+  "topic": "SOLID Principles",
+  "questions": [
+    {
+      "id": 23,
+      "question": "What is the SOLID principle?",
+      "answer": "SOLID is an acronym for five design principles that help make object-oriented code more maintainable, flexible, and scalable. Each letter stands for:\n\n- **S** – Single Responsibility Principle: A class should have only one reason to change.\n- **O** – Open/Closed Principle: Classes should be open for extension but closed for modification.\n- **L** – Liskov Substitution Principle: Subtypes must be substitutable for their base types without breaking the application.\n- **I** – Interface Segregation Principle: Don’t force a class to implement interfaces it doesn’t use.\n- **D** – Dependency Inversion Principle: Depend on abstractions, not concrete implementations.",
+      "example": "// SOLID in action\n// S: Separate responsibilities\n// O: Add new PaymentMethod without touching core logic\n// L: Subtypes replace base types without breaking\n// I: Split IPrinter, IScanner, IFax\n// D: Inject IPaymentService into dependent classes\n\n// These principles together lead to clean, modular, and testable code."
+    },
+    {
+      "id": 1,
+      "question": "What does the 'S' in SOLID stand for?",
+      "answer": "Single Responsibility Principle: Each class should have only one reason to change, i.e., it should do only one thing.",
+      "example": "// ❌ Bad Example (Violates SRP)\npublic class Report\n{\n    public string Title { get; set; }\n\n    public void GenerateReport() { /* logic */ }\n    public void SaveToFile() { /* file IO logic */ }\n}\n\n// ✅ Good Example (Follows SRP)\npublic class Report\n{\n    public string Title { get; set; }\n    public void GenerateReport() { /* logic */ }\n}\n\npublic class ReportSaver\n{\n    public void SaveToFile(Report report) { /* file IO logic */ }\n}"
+    },
+    {
+      "id": 2,
+      "question": "How do you identify a class that violates SRP?",
+      "answer": "A class violates SRP if it has more than one reason to change. This usually means it’s doing multiple unrelated jobs, like handling business logic and file I/O, or UI logic and database access. If you can split the class into two or more distinct responsibilities, it’s likely violating SRP.",
+      "example": "// ❌ SRP Violation Example\npublic class UserManager\n{\n    public void CreateUser(string name) { /* user creation logic */ }\n    public void SendWelcomeEmail(string email) { /* email logic */ }\n    public void SaveToDatabase() { /* DB logic */ }\n}\n\n// ✅ Refactored (SRP)\npublic class UserManager\n{\n    public void CreateUser(string name) { /* user creation logic */ }\n}\n\npublic class EmailService\n{\n    public void SendWelcomeEmail(string email) { /* email logic */ }\n}\n\npublic class UserRepository\n{\n    public void SaveToDatabase() { /* DB logic */ }\n}"
+    },
+    {
+      "id": 3,
+      "question": "You have a ReportService that generates, saves, and emails reports. How would you refactor it according to SRP?",
+      "answer": "Break down ReportService into multiple classes, each handling a single responsibility: generation, saving, and emailing. Each class should have only one reason to change.",
+      "example": "// ❌ SRP Violation\npublic class ReportService\n{\n    public void GenerateReport() { /* logic */ }\n    public void SaveReport() { /* save logic */ }\n    public void EmailReport() { /* email logic */ }\n}\n\n// ✅ Refactored SRP\npublic class ReportGenerator\n{\n    public void GenerateReport() { /* logic */ }\n}\n\npublic class ReportSaver\n{\n    public void SaveReport() { /* save logic */ }\n}\n\npublic class ReportEmailer\n{\n    public void EmailReport() { /* email logic */ }\n}\n\n// Coordinator class if needed\npublic class ReportCoordinator\n{\n    private readonly ReportGenerator _generator = new();\n    private readonly ReportSaver _saver = new();\n    private readonly ReportEmailer _emailer = new();\n\n    public void ProcessReport()\n    {\n        _generator.GenerateReport();\n        _saver.SaveReport();\n        _emailer.EmailReport();\n    }\n}"
+    },
+    {
+      "id": 4,
+      "question": "What does the 'O' in SOLID stand for?",
+      "answer": "Open/Closed Principle: Software entities (like classes, modules, functions) should be open for extension but closed for modification. This means you should be able to add new behavior without changing existing code.",
+      "example": "// ❌ Violates OCP (modifying existing code for every change)\npublic class PaymentProcessor\n{\n    public void Process(string method)\n    {\n        if (method == \"CreditCard\") { /* process credit card */ }\n        else if (method == \"PayPal\") { /* process PayPal */ }\n    }\n}\n\n// ✅ Follows OCP (open for extension via inheritance)\npublic interface IPaymentMethod\n{\n    void Process();\n}\n\npublic class CreditCardPayment : IPaymentMethod\n{\n    public void Process() { /* logic */ }\n}\n\npublic class PayPalPayment : IPaymentMethod\n{\n    public void Process() { /* logic */ }\n}\n\npublic class PaymentProcessor\n{\n    public void Process(IPaymentMethod paymentMethod)\n    {\n        paymentMethod.Process();\n    }\n}"
+    },
+    {
+      "id": 5,
+      "question": "How can you apply the Open/Closed Principle using interfaces?",
+      "answer": "You apply OCP using interfaces by defining common behavior in an interface and allowing new implementations to extend that behavior without modifying existing code. The code that uses the interface remains unchanged, while new logic is added via new classes.",
+      "example": "// Interface defines the contract\npublic interface IShape\n{\n    double CalculateArea();\n}\n\n// Existing implementation\npublic class Circle : IShape\n{\n    public double Radius { get; set; }\n    public double CalculateArea() => Math.PI * Radius * Radius;\n}\n\n// New implementation added without changing existing code\npublic class Rectangle : IShape\n{\n    public double Width { get; set; }\n    public double Height { get; set; }\n    public double CalculateArea() => Width * Height;\n}\n\n// AreaCalculator uses the interface, no changes needed for new shapes\npublic class AreaCalculator\n{\n    public double TotalArea(List<IShape> shapes)\n    {\n        return shapes.Sum(shape => shape.CalculateArea());\n    }\n}"
+    },
+    {
+      "id": 6,
+      "question": "You have a billing system with a CalculateTax() method. Every time a new country is added, you change the method. How would you fix this using OCP?",
+      "answer": "Use the Open/Closed Principle by creating an ITaxCalculator interface and implementing country-specific tax calculators. This way, you can add new countries without changing existing code—just add new classes.",
+      "example": "// ❌ Violates OCP\npublic class TaxService\n{\n    public decimal CalculateTax(string country, decimal amount)\n    {\n        if (country == \"US\") return amount * 0.07m;\n        else if (country == \"UK\") return amount * 0.20m;\n        else return 0;\n    }\n}\n\n// ✅ Follows OCP using interface\npublic interface ITaxCalculator\n{\n    decimal CalculateTax(decimal amount);\n}\n\npublic class USTaxCalculator : ITaxCalculator\n{\n    public decimal CalculateTax(decimal amount) => amount * 0.07m;\n}\n\npublic class UKTaxCalculator : ITaxCalculator\n{\n    public decimal CalculateTax(decimal amount) => amount * 0.20m;\n}\n\npublic class TaxService\n{\n    private readonly ITaxCalculator _calculator;\n\n    public TaxService(ITaxCalculator calculator)\n    {\n        _calculator = calculator;\n    }\n\n    public decimal GetTax(decimal amount) => _calculator.CalculateTax(amount);\n}\n\n// Add a new country: Just create a new class implementing ITaxCalculator"
+    },
+    {
+      "id": 7,
+      "question": "What is the Liskov Substitution Principle?",
+      "answer": "Liskov Substitution Principle (LSP) states that objects of a subclass should be able to replace objects of the superclass without affecting the correctness of the program. In simple terms, if class B is a subtype of class A, then anywhere you use A, you should be able to use B without weird behavior.",
+      "example": "// ✅ LSP Example\npublic class Bird\n{\n    public virtual void Fly() { Console.WriteLine(\"Flying\"); }\n}\n\npublic class Sparrow : Bird\n{\n    public override void Fly() { Console.WriteLine(\"Sparrow flying\"); }\n}\n\n// ❌ Violates LSP - Penguin can't fly but inherits Fly()\npublic class Penguin : Bird\n{\n    public override void Fly() { throw new NotSupportedException(\"Penguins can't fly\"); }\n}\n\n// ✅ Fix by refactoring\npublic abstract class Bird { }\n\npublic interface IFlyingBird\n{\n    void Fly();\n}\n\npublic class Sparrow : Bird, IFlyingBird\n{\n    public void Fly() { Console.WriteLine(\"Sparrow flying\"); }\n}\n\npublic class Penguin : Bird\n{\n    // No Fly method, so no broken expectation\n}"
+    },
+    {
+      "id": 8,
+      "question": "Why is the Liskov Substitution Principle important for inheritance?",
+      "answer": "LSP ensures that derived classes can stand in for their base classes without breaking the application. It preserves polymorphism and prevents unexpected behavior, bugs, or crashes when using subclasses in place of base classes.",
+      "example": "// ❌ Violates LSP\npublic class Rectangle\n{\n    public virtual int Width { get; set; }\n    public virtual int Height { get; set; }\n    public int Area() => Width * Height;\n}\n\npublic class Square : Rectangle\n{\n    public override int Width\n    {\n        set { base.Width = base.Height = value; }\n    }\n    public override int Height\n    {\n        set { base.Width = base.Height = value; }\n    }\n}\n\n// Client expecting independent width/height breaks when used with Square\nvoid PrintArea(Rectangle rect)\n{\n    rect.Width = 5;\n    rect.Height = 10;\n    Console.WriteLine(rect.Area()); // ✅ Expected 50, ❌ gets 100 for Square\n}\n\n// ✅ Fix: Don't force inheritance where behavior differs\npublic interface IShape\n{\n    int Area();\n}\n\npublic class Rectangle : IShape\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public int Area() => Width * Height;\n}\n\npublic class Square : IShape\n{\n    public int Side { get; set; }\n    public int Area() => Side * Side;\n}"
+    },
+    {
+      "id": 10,
+      "question": "There's a base class Bird with a Fly() method. Penguin inherits it but can't fly. Does this break LSP? How would you design it better?",
+      "answer": "Yes, this breaks Liskov Substitution Principle. If Penguin can't fly but inherits Fly(), it violates the expectation set by the base class. A better design is to separate flying behavior using interfaces so non-flying birds aren’t forced to implement Fly().",
+      "example": "// ❌ LSP Violation\npublic class Bird\n{\n    public virtual void Fly() => Console.WriteLine(\"Bird flying\");\n}\n\npublic class Penguin : Bird\n{\n    public override void Fly() => throw new NotSupportedException(\"Penguins can't fly\");\n}\n\n// ✅ LSP Compliant Design\npublic interface IBird { }\n\npublic interface IFlyingBird : IBird\n{\n    void Fly();\n}\n\npublic class Sparrow : IFlyingBird\n{\n    public void Fly() => Console.WriteLine(\"Sparrow flying\");\n}\n\npublic class Penguin : IBird\n{\n    // No Fly() method, avoids broken expectation\n}"
+    },
+    {
+      "id": 11,
+      "question": "What is the Interface Segregation Principle?",
+      "answer": "Interface Segregation Principle (ISP) states that a class should not be forced to implement interfaces it does not use. It's better to have multiple small, specific interfaces than one large, bloated interface.",
+      "example": "// ❌ Violates ISP: Big interface\npublic interface IWorker\n{\n    void Work();\n    void Eat();\n    void Sleep();\n}\n\npublic class Robot : IWorker\n{\n    public void Work() { /* works */ }\n    public void Eat() => throw new NotImplementedException();\n    public void Sleep() => throw new NotImplementedException();\n}\n\n// ✅ Follows ISP: Split interfaces\npublic interface IWorkable\n{\n    void Work();\n}\n\npublic interface IFeedable\n{\n    void Eat();\n}\n\npublic interface ISleepable\n{\n    void Sleep();\n}\n\npublic class Human : IWorkable, IFeedable, ISleepable\n{\n    public void Work() { }\n    public void Eat() { }\n    public void Sleep() { }\n}\n\npublic class Robot : IWorkable\n{\n    public void Work() { }\n}"
+    },
+    {
+      "id": 12,
+      "question": "What are the disadvantages of a fat interface?",
+      "answer": "A fat interface (one with too many unrelated methods) forces implementing classes to define methods they don’t need. This leads to unnecessary code, violates the Interface Segregation Principle, increases coupling, and makes the system harder to maintain or extend.",
+      "example": "// ❌ Fat interface\npublic interface IMultiFunctionDevice\n{\n    void Print();\n    void Scan();\n    void Fax();\n}\n\n// Class only supports printing, but has to implement everything\npublic class SimplePrinter : IMultiFunctionDevice\n{\n    public void Print() { Console.WriteLine(\"Printing\"); }\n    public void Scan() => throw new NotImplementedException();\n    public void Fax() => throw new NotImplementedException();\n}\n\n// ✅ ISP-compliant split interfaces\npublic interface IPrinter { void Print(); }\npublic interface IScanner { void Scan(); }\npublic interface IFax { void Fax(); }\n\npublic class SimplePrinter : IPrinter\n{\n    public void Print() { Console.WriteLine(\"Printing\"); }\n}"
+    },
+    {
+      "id": 13,
+      "question": "You have an IMachine interface with Print(), Scan(), and Fax() methods. Your class OldPrinter only prints. What’s the issue?",
+      "answer": "The issue is that OldPrinter is forced to implement methods it doesn’t use (Scan and Fax), which violates the Interface Segregation Principle. It leads to unnecessary code and breaks clean design.",
+      "example": "// ❌ Violates ISP\npublic interface IMachine\n{\n    void Print();\n    void Scan();\n    void Fax();\n}\n\npublic class OldPrinter : IMachine\n{\n    public void Print() { Console.WriteLine(\"Printing...\"); }\n    public void Scan() => throw new NotImplementedException();\n    public void Fax() => throw new NotImplementedException();\n}\n\n// ✅ Follows ISP\npublic interface IPrinter { void Print(); }\npublic class OldPrinter : IPrinter\n{\n    public void Print() { Console.WriteLine(\"Printing...\"); }\n}"
+    },
+    {
+      "id": 14,
+      "question": "What is the Dependency Inversion Principle?",
+      "answer": "The Dependency Inversion Principle (DIP) states that high-level modules should not depend on low-level modules. Both should depend on abstractions. Also, abstractions should not depend on details—details should depend on abstractions.",
+      "example": "// ❌ Violates DIP\npublic class MySQLDatabase\n{\n    public void SaveData(string data) => Console.WriteLine(\"Saving to MySQL\");\n}\n\npublic class DataService\n{\n    private MySQLDatabase _db = new MySQLDatabase();\n    public void Save(string data) => _db.SaveData(data);\n}\n\n// ✅ Follows DIP using interface\npublic interface IDatabase\n{\n    void SaveData(string data);\n}\n\npublic class MySQLDatabase : IDatabase\n{\n    public void SaveData(string data) => Console.WriteLine(\"Saving to MySQL\");\n}\n\npublic class DataService\n{\n    private readonly IDatabase _db;\n\n    public DataService(IDatabase db)\n    {\n        _db = db;\n    }\n\n    public void Save(string data) => _db.SaveData(data);\n}\n\n// Now you can inject any database implementation without changing DataService"
+    },
+    {
+      "id": 15,
+      "question": "How does the Dependency Inversion Principle (DIP) differ from Dependency Injection?",
+      "answer": "DIP is a design principle that says high-level modules should depend on abstractions, not concrete implementations. Dependency Injection is a design pattern used to follow DIP—it’s how you supply those dependencies (often through constructor, method, or property injection). So DIP is the 'what', and Dependency Injection is the 'how'.",
+      "example": "// ✅ DIP: Depend on abstraction\npublic interface IEmailService\n{\n    void SendEmail(string message);\n}\n\npublic class EmailService : IEmailService\n{\n    public void SendEmail(string message) => Console.WriteLine($\"Sending: {message}\");\n}\n\n// ✅ Dependency Injection: Injecting the dependency\npublic class Notification\n{\n    private readonly IEmailService _emailService;\n\n    // Constructor Injection\n    public Notification(IEmailService emailService)\n    {\n        _emailService = emailService;\n    }\n\n    public void Notify(string msg) => _emailService.SendEmail(msg);\n}\n\n// Usage\nvar notification = new Notification(new EmailService());\nnotification.Notify(\"Hello!\");"
+    },
+    {
+      "id": 16,
+      "question": "Your OrderProcessor directly creates a PaymentGateway object inside it. How does this violate DIP? How would you fix it?",
+      "answer": "This violates the Dependency Inversion Principle because the high-level module (OrderProcessor) depends on a low-level module (PaymentGateway). To follow DIP, both should depend on an abstraction. You can fix it by introducing an IPaymentGateway interface and injecting it into OrderProcessor.",
+      "example": "// ❌ Violates DIP\npublic class PaymentGateway\n{\n    public void ProcessPayment(decimal amount) => Console.WriteLine($\"Paid {amount}\");\n}\n\npublic class OrderProcessor\n{\n    private PaymentGateway _gateway = new PaymentGateway();\n    public void ProcessOrder(decimal amount)\n    {\n        _gateway.ProcessPayment(amount);\n    }\n}\n\n// ✅ Follows DIP using abstraction + injection\npublic interface IPaymentGateway\n{\n    void ProcessPayment(decimal amount);\n}\n\npublic class PaymentGateway : IPaymentGateway\n{\n    public void ProcessPayment(decimal amount) => Console.WriteLine($\"Paid {amount}\");\n}\n\npublic class OrderProcessor\n{\n    private readonly IPaymentGateway _gateway;\n\n    public OrderProcessor(IPaymentGateway gateway)\n    {\n        _gateway = gateway;\n    }\n\n    public void ProcessOrder(decimal amount)\n    {\n        _gateway.ProcessPayment(amount);\n    }\n}\n\n// Usage\nvar processor = new OrderProcessor(new PaymentGateway());\nprocessor.ProcessOrder(999);"
+    },
+    {
+      "id": 17,
+      "question": "What happens if you violate more than one SOLID principle in a single class?",
+      "answer": "Violating multiple SOLID principles in a class leads to tightly coupled, fragile, and hard-to-maintain code. It becomes harder to test, extend, and reuse. Bugs increase, and even small changes can cause ripple effects across the system.",
+      "example": "// ❌ Violates SRP, OCP, and DIP\npublic class InvoiceManager\n{\n    public void CreateInvoice() { /* logic */ }\n    public void SaveToFile() { /* file I/O */ }\n    public void SendEmail() { /* SMTP logic */ }\n    public void ProcessPayment() {\n        var gateway = new PaymentGateway(); // tightly coupled\n        gateway.Pay();\n    }\n}\n\n// ✅ Refactored (SRP + OCP + DIP)\npublic class InvoiceManager\n{\n    private readonly IPaymentGateway _gateway;\n    public InvoiceManager(IPaymentGateway gateway)\n    {\n        _gateway = gateway;\n    }\n\n    public void CreateInvoice() { /* logic */ }\n    public void ProcessPayment() => _gateway.Pay();\n}\n\npublic interface IPaymentGateway { void Pay(); }\npublic class StripeGateway : IPaymentGateway\n{\n    public void Pay() { /* payment logic */ }\n}\n\npublic class FileSaver\n{\n    public void Save(string data) { /* file logic */ }\n}\n\npublic class EmailSender\n{\n    public void Send(string content) { /* email logic */ }\n}"
+    },
+    {
+      "id": 18,
+      "question": "Can you give a real-world example where applying SOLID helped improve your codebase?",
+      "answer": "Yes. In a billing app I worked on, we initially had a huge `InvoiceService` class that handled generation, PDF export, emailing, and tax logic all in one place. It was hard to test and extend, especially when adding support for new tax rules or email templates. By applying SOLID:\n\n- We applied **SRP** by splitting responsibilities into `InvoiceGenerator`, `PdfExporter`, `TaxCalculator`, and `EmailSender`.\n- We used **OCP** to support country-specific tax rules by introducing `ITaxCalculator` with pluggable implementations.\n- We followed **DIP** by injecting interfaces like `IPdfExporter` and `IEmailSender`, making testing and mocking super easy.\n\nThe result: better separation of concerns, faster onboarding for new devs, easier testing, and no more chain-breaking bugs when making small changes.",
+      "example": "// Example of OCP + DIP refactor\npublic interface ITaxCalculator { decimal Calculate(decimal amount); }\n\npublic class IndiaTax : ITaxCalculator\n{\n    public decimal Calculate(decimal amount) => amount * 0.18m;\n}\n\npublic class InvoiceService\n{\n    private readonly ITaxCalculator _taxCalculator;\n    public InvoiceService(ITaxCalculator taxCalculator)\n    {\n        _taxCalculator = taxCalculator;\n    }\n\n    public decimal GetFinalAmount(decimal baseAmount)\n    {\n        return baseAmount + _taxCalculator.Calculate(baseAmount);\n    }\n}\n\n// Easily testable with mocks, extendable with new tax rules"
+    },
+    {
+      "id": 19,
+      "question": "How do SOLID principles relate to design patterns like Strategy, Factory, or Decorator?",
+      "answer": "Design patterns often exist to help implement SOLID principles. For example:\n\n- The **Strategy Pattern** supports the Open/Closed Principle by allowing you to add new behaviors without modifying existing code.\n- The **Factory Pattern** helps with the Dependency Inversion Principle by creating objects without tightly coupling your code to concrete implementations.\n- The **Decorator Pattern** aligns with the Single Responsibility Principle and Open/Closed Principle by letting you add functionality without altering the original class.\n\nSo, design patterns are practical tools to apply SOLID in real-world architecture.",
+      "example": "// Strategy Pattern example for OCP\npublic interface IDiscountStrategy\n{\n    decimal ApplyDiscount(decimal price);\n}\n\npublic class NoDiscount : IDiscountStrategy\n{\n    public decimal ApplyDiscount(decimal price) => price;\n}\n\npublic class NewYearDiscount : IDiscountStrategy\n{\n    public decimal ApplyDiscount(decimal price) => price * 0.9m;\n}\n\npublic class CheckoutService\n{\n    private readonly IDiscountStrategy _strategy;\n    public CheckoutService(IDiscountStrategy strategy)\n    {\n        _strategy = strategy;\n    }\n\n    public decimal GetFinalPrice(decimal price) => _strategy.ApplyDiscount(price);\n}\n\n// Add new discount logic without touching CheckoutService → OCP applied"
+    },
+    {
+      "id": 20,
+      "question": "What is the trade-off of following SOLID too strictly?",
+      "answer": "Following SOLID too strictly can lead to overengineering. You might end up with too many small classes, interfaces, and layers, making the system unnecessarily complex and harder to navigate. It can also slow down development and overwhelm junior developers. SOLID should be applied with balance and only when the complexity actually demands it.",
+      "example": "// Over-engineered for a simple use case\npublic interface IAdder\n{\n    int Add(int a, int b);\n}\n\npublic class SimpleAdder : IAdder\n{\n    public int Add(int a, int b) => a + b;\n}\n\npublic class Calculator\n{\n    private readonly IAdder _adder;\n    public Calculator(IAdder adder)\n    {\n        _adder = adder;\n    }\n\n    public int Calculate(int a, int b) => _adder.Add(a, b);\n}\n\n// 👀 This is overkill for just adding two numbers. A single method would do the job in most cases."
+    },
+    {
+      "id": 21,
+      "question": "How does Dependency Injection in ASP.NET Core help apply the Dependency Inversion Principle (DIP)?",
+      "answer": "ASP.NET Core has built-in Dependency Injection (DI), which makes it easy to follow DIP. Instead of high-level services directly instantiating low-level dependencies, you define abstractions (interfaces) and register their implementations. The framework injects these dependencies automatically, allowing you to depend on abstractions, not concrete classes.",
+      "example": "// Define abstraction\npublic interface IEmailService\n{\n    void Send(string to, string message);\n}\n\n// Implement the interface\npublic class SmtpEmailService : IEmailService\n{\n    public void Send(string to, string message)\n    {\n        Console.WriteLine($\"Sending email to {to}\");\n    }\n}\n\n// High-level service depends on abstraction\npublic class NotificationService\n{\n    private readonly IEmailService _emailService;\n\n    public NotificationService(IEmailService emailService)\n    {\n        _emailService = emailService;\n    }\n\n    public void Notify(string user) => _emailService.Send(user, \"Hello!\");\n}\n\n// In Program.cs or Startup.cs (DI container setup)\nbuilder.Services.AddScoped<IEmailService, SmtpEmailService>();\nbuilder.Services.AddScoped<NotificationService>();\n\n// ASP.NET Core injects the dependencies automatically"
+    },
+    {
+      "id": 22,
+      "question": "In what situations would you use IOptions pattern or Factory pattern to maintain OCP or DIP?",
+      "answer": "Use the **IOptions pattern** when your class depends on configuration values that may change per environment (e.g., API keys, feature flags). It keeps configuration out of your business logic, adhering to DIP. Use the **Factory pattern** when object creation needs to vary based on runtime logic or when you need to create instances of classes without directly depending on their concrete types—helping with both OCP and DIP.",
+      "example": "// ✅ IOptions example for DIP\npublic class EmailSettings\n{\n    public string SmtpServer { get; set; }\n}\n\npublic class EmailService\n{\n    private readonly string _server;\n    public EmailService(IOptions<EmailSettings> options)\n    {\n        _server = options.Value.SmtpServer;\n    }\n}\n\n// ✅ Factory example for OCP\npublic interface IPaymentGateway { void Pay(); }\n\npublic class StripeGateway : IPaymentGateway\n{\n    public void Pay() => Console.WriteLine(\"Paid with Stripe\");\n}\n\npublic class RazorpayGateway : IPaymentGateway\n{\n    public void Pay() => Console.WriteLine(\"Paid with Razorpay\");\n}\n\npublic class PaymentGatewayFactory\n{\n    public IPaymentGateway Create(string provider)\n    {\n        return provider switch\n        {\n            \"Stripe\" => new StripeGateway(),\n            \"Razorpay\" => new RazorpayGateway(),\n            _ => throw new NotSupportedException()\n        };\n    }\n}\n\n// This allows new gateways to be added without modifying existing code (OCP)"
+    }
+  ]
+}
