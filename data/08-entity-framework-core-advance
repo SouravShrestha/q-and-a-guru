@@ -1,0 +1,185 @@
+{
+  "topic": "Entity Framework Core – Advanced & Miscellaneous",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does `dotnet ef migrations add` actually generate?",
+      "answer": "It creates a C# class that contains Up() and Down() methods, which define how to apply or rollback changes to your DB schema.",
+      "example": "// Migration file\nmigrationBuilder.CreateTable(\"Products\", ...);"
+    },
+    {
+      "id": 2,
+      "question": "What is the purpose of the `ModelSnapshot.cs` file?",
+      "answer": "EF uses it to track the latest model state so it can diff future changes when adding a new migration.",
+      "example": "// Stored in Migrations folder\nModelSnapshot contains final state of current schema"
+    },
+    {
+      "id": 3,
+      "question": "How do you customize table or column names?",
+      "answer": "Use Fluent API or Data Annotations like `[Table(\"tbl_name\")]` or `.ToTable(\"tbl_name\")`.",
+      "example": "modelBuilder.Entity<User>().ToTable(\"tbl_Users\");"
+    },
+    {
+      "id": 4,
+      "question": "What is the difference between `ToList()` and `ToListAsync()`?",
+      "answer": "`ToListAsync()` executes asynchronously and doesn't block threads — ideal for scalable apps.",
+      "example": "var users = await context.Users.ToListAsync();"
+    },
+    {
+      "id": 5,
+      "question": "What is Select Projection in LINQ?",
+      "answer": "It’s when you project only needed fields using `.Select()` to reduce data load and improve performance.",
+      "example": "var names = context.Users.Select(u => u.Name).ToList();"
+    },
+    {
+      "id": 6,
+      "question": "How do you write a dynamic LINQ query?",
+      "answer": "Use PredicateBuilder, or conditional `Where` clauses inside if-statements.",
+      "example": "if (search != null) query = query.Where(u => u.Name.Contains(search));"
+    },
+    {
+      "id": 7,
+      "question": "What’s the difference between Include and ThenInclude?",
+      "answer": "`Include` loads related entity; `ThenInclude` is for loading nested relationships.",
+      "example": "context.Orders.Include(o => o.Customer).ThenInclude(c => c.Address);"
+    },
+    {
+      "id": 8,
+      "question": "How do you log SQL queries in EF Core?",
+      "answer": "Use `LogTo()` on DbContext options, or hook into ILogger.",
+      "example": "optionsBuilder.LogTo(Console.WriteLine);"
+    },
+    {
+      "id": 9,
+      "question": "What is split vs single query in EF Core?",
+      "answer": "Single query joins all related data. Split query fires multiple SELECTs for each relation — helps avoid cartesian explosion.",
+      "example": "context.Orders.Include(...).AsSplitQuery();"
+    },
+    {
+      "id": 10,
+      "question": "How do you write a custom extension method for a query?",
+      "answer": "Use `IQueryable<T>` as input and return modified query.",
+      "example": "public static IQueryable<User> ActiveOnly(this IQueryable<User> query) => query.Where(u => u.IsActive);"
+    },
+    {
+      "id": 11,
+      "question": "How do you run raw SQL commands that return non-entities?",
+      "answer": "Use `context.Database.ExecuteSqlRaw()` or `context.Some.FromSqlRaw()` mapped to a DTO.",
+      "example": "context.Database.ExecuteSqlRaw(\"DELETE FROM Users WHERE IsTemp=1\");"
+    },
+    {
+      "id": 12,
+      "question": "What is compiled query in EF Core?",
+      "answer": "It's a precompiled LINQ expression for performance-sensitive queries.",
+      "example": "EF.CompileQuery((ctx, id) => ctx.Users.First(x => x.Id == id));"
+    },
+    {
+      "id": 13,
+      "question": "How do you profile EF Core queries?",
+      "answer": "Use `MiniProfiler`, `EFCore.Diagnostics`, SQL Server Profiler, or custom `LogTo()` hooks.",
+      "example": "// Hook EF to log slow queries"
+    },
+    {
+      "id": 14,
+      "question": "How do you handle soft deletes in EF Core?",
+      "answer": "Add an `IsDeleted` flag and override `SaveChanges()` to filter them out.",
+      "example": "builder.HasQueryFilter(e => !e.IsDeleted);"
+    },
+    {
+      "id": 15,
+      "question": "What is table splitting?",
+      "answer": "Multiple entities share the same table, often used for modular complex entities.",
+      "example": "modelBuilder.Entity<User>().ToTable(\"Users\").HasOne(u => u.Profile).WithOne().HasForeignKey<Profile>(p => p.Id);"
+    },
+    {
+      "id": 16,
+      "question": "What is value conversion in EF Core?",
+      "answer": "You can convert properties like enums or encrypted strings using `HasConversion()`.",
+      "example": "builder.Property(p => p.Role).HasConversion<string>();"
+    },
+    {
+      "id": 17,
+      "question": "What’s the use of `ChangeTracker`?",
+      "answer": "It tracks changes in entities (added, modified, deleted) for EF to decide what SQL to run.",
+      "example": "context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);"
+    },
+    {
+      "id": 18,
+      "question": "How do you test EF Core without hitting the real database?",
+      "answer": "Use `InMemoryDatabase`, `Sqlite in-memory mode`, or mock `DbSet` with interfaces.",
+      "example": "UseDbContextInMemoryDatabase(\"TestDb\")"
+    },
+    {
+      "id": 19,
+      "question": "What is shadow state in EF Core?",
+      "answer": "Shadow properties exist in the model but not in the entity class itself.",
+      "example": "modelBuilder.Entity<Post>().Property<DateTime>(\"CreatedAt\");"
+    },
+    {
+      "id": 20,
+      "question": "How do you store enums in EF Core?",
+      "answer": "Store as int (default) or string using `HasConversion()`.",
+      "example": "builder.Property(p => p.Status).HasConversion<string>();"
+    },
+    {
+      "id": 21,
+      "question": "What is a query tag in EF Core?",
+      "answer": "Adds a comment to generated SQL, useful for debugging or profiling.",
+      "example": "context.Users.TagWith(\"Homepage User Query\").ToList();"
+    },
+    {
+      "id": 22,
+      "question": "What’s the role of `DbContextOptions`?",
+      "answer": "It carries configuration like connection string, provider, logging, etc., injected via DI.",
+      "example": "new AppDbContext(new DbContextOptions<AppDbContext>());"
+    },
+    {
+      "id": 23,
+      "question": "How do you handle transaction manually in EF Core?",
+      "answer": "Use `context.Database.BeginTransaction()`.",
+      "example": "using var tx = context.Database.BeginTransaction();"
+    },
+    {
+      "id": 24,
+      "question": "How to rollback if `SaveChanges` fails midway?",
+      "answer": "Wrap changes inside a transaction and rollback on failure.",
+      "example": "try { SaveChanges(); tx.Commit(); } catch { tx.Rollback(); }"
+    },
+    {
+      "id": 25,
+      "question": "How do you apply global filters (like multi-tenancy)?",
+      "answer": "Use `HasQueryFilter()` in `OnModelCreating()`.",
+      "example": "builder.Entity<Order>().HasQueryFilter(o => o.TenantId == _tenantId);"
+    },
+    {
+      "id": 26,
+      "question": "How do you use projection to DTOs in EF Core?",
+      "answer": "Use `.Select()` to map entities to DTOs inside the LINQ query itself.",
+      "example": "context.Users.Select(u => new UserDto { Id = u.Id, Name = u.Name });"
+    },
+    {
+      "id": 27,
+      "question": "What is the difference between `AsEnumerable()` and `AsQueryable()`?",
+      "answer": "`AsQueryable()` keeps query on DB. `AsEnumerable()` pulls data into memory.",
+      "example": "query.AsEnumerable().Where(x => CustomFunc(x));"
+    },
+    {
+      "id": 28,
+      "question": "How can you override `SaveChanges()` to add audit logic?",
+      "answer": "Create a base DbContext and override `SaveChanges()` or `SaveChangesAsync()` to inject timestamps or user info.",
+      "example": "entry.Property(\"UpdatedAt\").CurrentValue = DateTime.UtcNow;"
+    },
+    {
+      "id": 29,
+      "question": "How do you execute stored procedures in EF Core?",
+      "answer": "Use `FromSqlRaw()` mapped to a known return type or DTO.",
+      "example": "context.Users.FromSqlRaw(\"EXEC GetUsersByRole @role = {0}\", role)"
+    },
+    {
+      "id": 30,
+      "question": "How do you enforce unique constraints in EF Core?",
+      "answer": "Use `HasIndex(...).IsUnique()` in Fluent API.",
+      "example": "modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();"
+    }
+  ]
+}
