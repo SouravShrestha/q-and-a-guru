@@ -1,0 +1,185 @@
+{
+  "topic": "Entity Framework Core (Code-First & DB-First)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Entity Framework Core?",
+      "answer": "EF Core is a lightweight, cross-platform ORM (Object-Relational Mapper) from Microsoft that enables developers to work with databases using .NET objects.",
+      "example": "// Define entity\npublic class Product { public int Id { get; set; } public string Name { get; set; } }"
+    },
+    {
+      "id": 2,
+      "question": "What is Code-First approach in EF Core?",
+      "answer": "Code-First means you define your model classes first in C#, then EF creates the database schema using migrations.",
+      "example": "// Define entity → run migrations\npublic class Book { public int Id { get; set; } }"
+    },
+    {
+      "id": 3,
+      "question": "What is Database-First approach?",
+      "answer": "DB-First means the database already exists, and you scaffold models and DbContext from it.",
+      "example": "// Scaffold models:\ndotnet ef dbcontext scaffold \"connection-string\" Microsoft.EntityFrameworkCore.SqlServer"
+    },
+    {
+      "id": 4,
+      "question": "What is a DbContext?",
+      "answer": "It’s the main class in EF Core for interacting with the database — it represents a session and provides access to your DbSets.",
+      "example": "public class AppDbContext : DbContext { public DbSet<User> Users { get; set; } }"
+    },
+    {
+      "id": 5,
+      "question": "What is a DbSet?",
+      "answer": "DbSet is a collection of all entities in the context or that can be queried from the database.",
+      "example": "context.Products.ToList(); // queries Product table"
+    },
+    {
+      "id": 6,
+      "question": "What are EF Core migrations?",
+      "answer": "Migrations track changes to your model and apply them to the database schema incrementally.",
+      "example": "// Add + apply migration\ndotnet ef migrations add Init\ndotnet ef database update"
+    },
+    {
+      "id": 7,
+      "question": "What is Fluent API in EF Core?",
+      "answer": "Fluent API allows you to configure model behavior using C# code instead of annotations.",
+      "example": "modelBuilder.Entity<Product>().HasKey(p => p.Id);"
+    },
+    {
+      "id": 8,
+      "question": "How do you seed data in EF Core?",
+      "answer": "Seed data using `HasData()` in `OnModelCreating` method inside your DbContext.",
+      "example": "modelBuilder.Entity<User>().HasData(new User { Id = 1, Name = \"Admin\" });"
+    },
+    {
+      "id": 9,
+      "question": "How do you perform a one-to-many relationship in EF Core?",
+      "answer": "Define navigation properties in both entities and use Fluent API or conventions.",
+      "example": "public class Order { public ICollection<Item> Items { get; set; } }"
+    },
+    {
+      "id": 10,
+      "question": "How do you perform a many-to-many relationship in EF Core?",
+      "answer": "Use a join entity or let EF Core 5+ auto-create the join table using collections on both sides.",
+      "example": "public ICollection<Tag> Tags { get; set; }"
+    },
+    {
+      "id": 11,
+      "question": "How do you revert a migration?",
+      "answer": "Use `dotnet ef database update <PreviousMigration>` to roll back the DB.",
+      "example": "dotnet ef database update Initial"
+    },
+    {
+      "id": 12,
+      "question": "How do you remove a migration?",
+      "answer": "Use `dotnet ef migrations remove` to delete the last migration file if not yet applied.",
+      "example": "// Undo add\n dotnet ef migrations remove"
+    },
+    {
+      "id": 13,
+      "question": "How do you use raw SQL in EF Core?",
+      "answer": "Use `FromSqlRaw()` or `ExecuteSqlRaw()` to run SQL queries.",
+      "example": "context.Users.FromSqlRaw(\"SELECT * FROM Users\");"
+    },
+    {
+      "id": 14,
+      "question": "How do you enable lazy loading in EF Core?",
+      "answer": "Install the proxy package and mark navigation properties as `virtual`.",
+      "example": "public virtual ICollection<Orders> Orders { get; set; }"
+    },
+    {
+      "id": 15,
+      "question": "What is eager loading?",
+      "answer": "Eager loading loads related entities using `.Include()` when querying.",
+      "example": "context.Users.Include(u => u.Roles).ToList();"
+    },
+    {
+      "id": 16,
+      "question": "What is the difference between Add and Attach?",
+      "answer": "`Add` marks entity as new; `Attach` tracks it as unchanged unless modified.",
+      "example": "context.Attach(existingEntity);"
+    },
+    {
+      "id": 17,
+      "question": "How do you track changes in EF Core?",
+      "answer": "EF Core tracks changes to entities in memory and applies them during SaveChanges().",
+      "example": "entity.Name = \"Updated\";\ncontext.SaveChanges();"
+    },
+    {
+      "id": 18,
+      "question": "How do you turn off change tracking?",
+      "answer": "Use `.AsNoTracking()` to query data without tracking (better for read-only).",
+      "example": "context.Users.AsNoTracking().ToList();"
+    },
+    {
+      "id": 19,
+      "question": "How do you configure a composite key?",
+      "answer": "Use Fluent API and call `HasKey()` with multiple props.",
+      "example": "modelBuilder.Entity<OrderItem>().HasKey(x => new { x.OrderId, x.ProductId });"
+    },
+    {
+      "id": 20,
+      "question": "How do you handle concurrency in EF Core?",
+      "answer": "Use a `RowVersion` byte[] column and `[Timestamp]` attribute.",
+      "example": "public byte[] RowVersion { get; set; }"
+    },
+    {
+      "id": 21,
+      "question": "How do you handle cascade delete?",
+      "answer": "Configure using Fluent API with `OnDelete()`.",
+      "example": "modelBuilder.Entity<Child>().HasOne(c => c.Parent).WithMany().OnDelete(DeleteBehavior.Cascade);"
+    },
+    {
+      "id": 22,
+      "question": "Can you use EF Core without migrations?",
+      "answer": "Yes. You can use `EnsureCreated()` to generate DB from model, but without migration tracking.",
+      "example": "context.Database.EnsureCreated();"
+    },
+    {
+      "id": 23,
+      "question": "How do you scaffold models from an existing DB?",
+      "answer": "Use the `dotnet ef dbcontext scaffold` command with your connection string.",
+      "example": "dotnet ef dbcontext scaffold \"conn\" Microsoft.EntityFrameworkCore.SqlServer"
+    },
+    {
+      "id": 24,
+      "question": "How do you ignore a property in EF Core?",
+      "answer": "Use `[NotMapped]` attribute or Fluent API `Ignore()`.",
+      "example": "[NotMapped] public string TempData { get; set; }"
+    },
+    {
+      "id": 25,
+      "question": "What is the difference between SaveChanges and SaveChangesAsync?",
+      "answer": "SaveChanges is synchronous; SaveChangesAsync is non-blocking and preferred for web apps.",
+      "example": "await context.SaveChangesAsync();"
+    },
+    {
+      "id": 26,
+      "question": "What are shadow properties?",
+      "answer": "Properties not defined in the CLR class but tracked by EF (e.g., audit fields).",
+      "example": "modelBuilder.Entity<Post>().Property<DateTime>(\"CreatedDate\");"
+    },
+    {
+      "id": 27,
+      "question": "What’s the difference between EF Core and EF6?",
+      "answer": "EF Core is a full rewrite, cross-platform, faster, and more lightweight than EF6.",
+      "example": "// EF6 is Windows only; EF Core supports .NET Core"
+    },
+    {
+      "id": 28,
+      "question": "How do you apply migrations programmatically?",
+      "answer": "Call `context.Database.Migrate()` on app startup.",
+      "example": "app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();"
+    },
+    {
+      "id": 29,
+      "question": "What are some limitations of Database-First?",
+      "answer": "- Harder to control fine-grained model changes\n- Migrations are not tracked well\n- Large scaffolding outputs",
+      "example": "// Hard to rename props across large schema"
+    },
+    {
+      "id": 30,
+      "question": "When should you prefer Code-First over DB-First?",
+      "answer": "Use Code-First when you own/control the schema. Use DB-First when the DB is managed externally.",
+      "example": "// Code-First in greenfield apps; DB-First in legacy integrations"
+    }
+  ]
+}
