@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "/q-and-a-guru/static/css/main.2431b620.css",
-    "main.js": "/q-and-a-guru/static/js/main.154b5073.js",
+    "main.css": "/q-and-a-guru/static/css/main.4973bd64.css",
+    "main.js": "/q-and-a-guru/static/js/main.8331fe9c.js",
     "static/media/RobotoFlex.ttf": "/q-and-a-guru/static/media/RobotoFlex.f700cdc3d6dd6bdaebd3.ttf",
+    "static/media/brain-for-light.png": "/q-and-a-guru/static/media/brain-for-light.14ef9ac541f0dfe3634a.png",
+    "static/media/switch-to-light.png": "/q-and-a-guru/static/media/switch-to-light.c1dcd94e771de162b286.png",
     "static/media/brain.png": "/q-and-a-guru/static/media/brain.06a2c57f1d83ed549496.png",
+    "static/media/switch-to-dark.png": "/q-and-a-guru/static/media/switch-to-dark.660a68ef4c6901dc35a5.png",
     "index.html": "/q-and-a-guru/index.html",
-    "main.2431b620.css.map": "/q-and-a-guru/static/css/main.2431b620.css.map",
-    "main.154b5073.js.map": "/q-and-a-guru/static/js/main.154b5073.js.map"
+    "main.4973bd64.css.map": "/q-and-a-guru/static/css/main.4973bd64.css.map",
+    "main.8331fe9c.js.map": "/q-and-a-guru/static/js/main.8331fe9c.js.map"
   },
   "entrypoints": [
-    "static/css/main.2431b620.css",
-    "static/js/main.154b5073.js"
+    "static/css/main.4973bd64.css",
+    "static/js/main.8331fe9c.js"
   ]
 }
