@@ -1,34 +1,60 @@
-html, body {
-  background: #000;
+/* ── Theme tokens ── */
+:root {
+  --bg-base: #000000;
+  --bg-surface: #171717;
+  --bg-elevated: #262626;
+  --bg-input: #000000;
+  --bg-code: #000000;
+  --border-primary: #000000;
+  --border-secondary: #404040;
+  --text-primary: #ffffff;
+  --text-secondary: #6b7280;
+  --accent: #31b8c6;
+  --accent-hover: #2699a6;
+  --scrollbar-thumb: #4a4a4a;
+  --scrollbar-track: #191a1a;
 }
+
+:root.light-mode {
+  --bg-base: #f0f4f8;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f1f5f9;
+  --bg-input: #f8fafc;
+  --bg-code: #1e293b;
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-track: #e2e8f0;
+}
+
+html, body {
+  background: var(--bg-base);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Scrollbar styling for WebKit browsers (Chrome, Edge, Safari) */
-::-webkit-scrollbar {
-  width: 8px;
-  background-color: #191a1a; /* Scrollbar track background */
-}
-
-::-webkit-scrollbar-track {
-  background-color: #191a1a; /* Scrollbar track background */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #4a4a4a; /* Scrollbar thumb color */
-  border-radius: 4px;
-}
-
-/* Firefox scrollbar styling */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #4a4a4a #191a1a; /* thumb and track */
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; background-color: var(--scrollbar-track); }
+::-webkit-scrollbar-track { background-color: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 4px; }
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
 
 @font-face {
   font-family: 'RobotFlex';
   src: url('/src/fonts/RobotoFlex.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+/* Print */
+@media print {
+  header, nav, .no-print { display: none !important; }
+  main { margin-left: 0 !important; margin-top: 0 !important; }
+  body { background: #fff; color: #000; }
 }
