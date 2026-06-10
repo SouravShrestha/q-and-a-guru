@@ -8,15 +8,19 @@ const DIFFICULTY_COLORS = {
   hard:   { bg: '#7f1d1d', color: '#fca5a5' },
 };
 
+// Left margin is handled by the `md:ml-[25%]` class (matching the sidebar's
+// md:w-1/4 width) so it stays in sync on resize / orientation change rather
+// than being measured once in JS at render time.
 const mainStyle = (headerHeight) => ({
   backgroundColor: 'transparent',
   fontFamily: 'RobotFlex',
   marginTop: headerHeight,
-  marginLeft: typeof window !== 'undefined' && window.innerWidth >= 768 ? '25%' : 0,
 });
 
+const MAIN_CLASS = 'flex-1 flex flex-col overflow-y-auto md:ml-[25%] min-w-0';
+
 const Skeleton = ({ headerHeight }) => (
-  <main className="flex-1 flex flex-col overflow-y-auto" style={mainStyle(headerHeight)}>
+  <main className={MAIN_CLASS} style={mainStyle(headerHeight)}>
     <div
       className="px-5 pt-4 pb-4 sticky top-0 z-10"
       style={{ backgroundColor: 'var(--bg-surface)', borderBottom: '1px solid var(--border-primary)' }}
@@ -40,7 +44,7 @@ const Skeleton = ({ headerHeight }) => (
 
 const ErrorState = ({ error, onRetry, headerHeight }) => (
   <main
-    className="flex-1 flex flex-col items-center justify-center text-center px-8"
+    className={`${MAIN_CLASS} items-center justify-center text-center px-8`}
     style={mainStyle(headerHeight)}
   >
     <div className="text-5xl mb-4">⚠️</div>
@@ -143,7 +147,7 @@ const MainContent = ({
   if (error) return <ErrorState error={error} onRetry={onRetry} headerHeight={headerHeight} />;
 
   return (
-    <main className="flex-1 flex flex-col overflow-y-auto" style={mainStyle(headerHeight)}>
+    <main className={MAIN_CLASS} style={mainStyle(headerHeight)}>
       {/* ── Search bar ── */}
       <div
         className="px-5 pt-4 pb-3 sticky top-0 z-10 no-print"
