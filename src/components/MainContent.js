@@ -269,7 +269,7 @@ const MainContent = ({
             <div className="flex items-start gap-1">
               {/* Bookmark star */}
               <button
-                className="mt-3.5 text-base shrink-0 focus:outline-none transition-colors leading-none"
+                className="mt-4 text-base shrink-0 focus:outline-none transition-colors leading-none"
                 style={{ color: starred ? '#facc15' : 'var(--border-secondary)' }}
                 onClick={() => toggleBookmark(q._key)}
                 title={starred ? 'Remove bookmark' : 'Bookmark this question'}

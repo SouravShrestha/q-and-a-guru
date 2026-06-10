@@ -1,14 +1,7 @@
-const SunIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z" />
-  </svg>
-);
-
-const MoonIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-  </svg>
-);
+import switchToDark from '../assets/images/switch-to-dark.png';
+import switchToLight from '../assets/images/switch-to-light.png';
+import brainQuiz from '../assets/images/brain.png';
+import brainLight from '../assets/images/brain-for-light.png';
 
 const Header = ({ headerHeight, sidebarOpen, setSidebarOpen, darkMode, toggleDarkMode, onRandomQuestion }) => (
   <header
@@ -51,19 +44,29 @@ const Header = ({ headerHeight, sidebarOpen, setSidebarOpen, darkMode, toggleDar
       <button
         onClick={toggleDarkMode}
         className="p-2 rounded-full focus:outline-none transition-opacity hover:opacity-70"
-        style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--bg-elevated)' }}
+        style={{ backgroundColor: 'var(--bg-elevated)' }}
         title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       >
-        {darkMode ? <SunIcon /> : <MoonIcon />}
+        <img
+          src={darkMode ? switchToLight : switchToDark}
+          alt={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          className="w-5 h-5"
+        />
       </button>
-      <img
-        src={require('../assets/images/brain.png')}
-        alt="Random Question"
-        title="Random question"
-        className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform drop-shadow"
+      <button
         onClick={onRandomQuestion}
-      />
+        className="p-2 rounded-full focus:outline-none transition-opacity hover:opacity-70"
+        style={{ backgroundColor: 'var(--bg-elevated)' }}
+        title="Random question"
+        aria-label="Random question"
+      >
+        <img
+          src={darkMode ? brainQuiz : brainLight}
+          alt="Random Question"
+          className="w-5 h-5 drop-shadow cursor-pointer"
+        />
+      </button>
     </div>
   </header>
 );
